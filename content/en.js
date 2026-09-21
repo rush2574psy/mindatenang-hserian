@@ -11,7 +11,7 @@ window.MT_CONTENT.en = {
     draftBM: "",
     hello: "Welcome. You are not alone.",
     helloP: "Simple information and calming exercises for you and your family, to use between clinic visits.",
-    calmSub: "Breathing & calming exercises, 1–5 minutes",
+    calmSub: "Breathing, calming & meditation, 1–5 minutes",
     sections: "Sections",
     disc: "This site supports, but does not replace, care from your doctor and team.",
     priv: "We collect no information about you. No login needed.",
@@ -61,12 +61,94 @@ window.MT_CONTENT.en = {
     voiceOn: "Voice on", voiceOff: "Voice off",
     voiceNoBM: "",
     voiceNone: "This browser can't play the voice guide. Follow the words on screen instead.",
-    voice: { inhale: "Breathe in", exhale: "Breathe out slowly", hold: "Hold" },
+    voice: { inhale: "Breathe in, gently", exhale: "And breathe out, slowly", hold: "Hold, softly" },
+    amb: { off: "🎵 Background: off", rain: "🌧 Background: rain", hum: "🎵 Background: soft tone" },
+    left: "left",
     /* Recorded voice (optional). Put MP3 files in site/audio/en/ and list them here, e.g.
        "breath-inhale": "audio/en/breath-inhale.mp3". Any key not listed uses the phone's voice.
        Keys are listed in the recording script (2026-09-18-skrip-rakaman-suara.docx). */
     audio: {},
     guides: {
+      /* ---- Guided meditation (med: true = calm view, bell, progress bar) ---- */
+      "med-breath-guide": {
+        name: "Mindful Breathing", from: "med-breath", med: true,
+        lead: "Follow the voice. About 3 minutes. You can open your eyes at any time.",
+        care: "If upsetting memories or confusing thoughts come up, open your eyes, stop, and use [5-4-3-2-1](#/ground) instead.",
+        steps: [
+          ["Sit comfortably. Let your shoulders drop. Close your eyes, or rest your gaze softly on the floor.", 12],
+          ["Breathe normally. There is nothing to change.", 12],
+          ["Notice the air coming in through your nose, and going out again.", 15],
+          ["Feel your chest or belly rise gently, and fall gently.", 18],
+          ["Choose one place to rest your attention. The tip of your nose, your chest, or your belly.", 18],
+          ["Your mind will wander. That is normal.", 12],
+          ["When you notice your mind has wandered, gently bring your attention back to your breath.", 22],
+          ["Breathe in. And breathe out.", 15],
+          ["Each time you come back to the breath, that is the practice. You are doing well.", 22],
+          ["Keep breathing calmly, at your own pace.", 25],
+          ["Now, slowly, notice the sounds around you.", 10]
+        ],
+        done: "Done. Open your eyes slowly when you are ready."
+      },
+      "med-body-guide": {
+        name: "Body Scan", from: "med-body", med: true,
+        lead: "Follow the voice. About 5 minutes. Also good before sleep.",
+        care: "If a part of your body is painful or injured, just notice it from a distance, or skip it. If upsetting memories come up, open your eyes and use [5-4-3-2-1](#/ground).",
+        steps: [
+          ["Lie down or sit comfortably. Close your eyes if you like.", 12],
+          ["Breathe in slowly, and breathe out long. Let your body feel heavy.", 15],
+          ["Bring your attention to the soles of your feet. Notice whatever you feel. Warmth, coolness, or nothing at all.", 25],
+          ["Move up to your ankles and calves. If there is tension, let it soften with each breath out.", 25],
+          ["Now your knees and thighs. Feel the weight of your legs being supported.", 22],
+          ["Your hips and lower back. Breathe out, and let them loosen.", 22],
+          ["Your belly. Feel it rise and fall with your breath.", 22],
+          ["Your chest and upper back. Nothing needs to change. Just notice.", 22],
+          ["Your hands and fingers. Let your hands rest, heavy and soft.", 22],
+          ["Your arms and shoulders. Let your shoulders drop, away from your ears.", 22],
+          ["Your neck and jaw. Loosen your jaw. Let your teeth part a little.", 22],
+          ["Your face. Forehead, eyes and cheeks. Let your face be calm.", 22],
+          ["Now feel your whole body, from your toes to the top of your head, breathing calmly.", 30],
+          ["Slowly, move your fingers and toes.", 12]
+        ],
+        done: "Done. Take your time before you get up."
+      },
+      "med-place-guide": {
+        name: "Calm Place", from: "med-place", med: true,
+        lead: "Follow the voice. About 5 minutes. Picture a place where you feel calm and safe.",
+        care: "If no place feels safe, imagine a made-up one. If upsetting memories come up, open your eyes, feel your feet on the floor, and use [5-4-3-2-1](#/ground).",
+        steps: [
+          ["Sit or lie down comfortably. Close your eyes, or look softly downwards.", 12],
+          ["Take a few slow breaths. Let each breath out be longer than the breath in.", 18],
+          ["Picture a place where you feel calm and safe. It can be a real place, like a village, a riverside or a garden. Or a place you make up.", 30],
+          ["Look around this place. What colours do you see? What is the light like?", 25],
+          ["Listen. Perhaps water, wind, birds, or just quiet.", 25],
+          ["Feel. Perhaps a cool breeze on your skin, the ground under your feet, or warm sunlight.", 25],
+          ["Smell. Perhaps rain, flowers, or your favourite food.", 22],
+          ["Here, there is nothing you need to do. You can rest.", 25],
+          ["Feel your body becoming calmer, and lighter.", 25],
+          ["If you like, give this place one word, like calm, or home. You can remember this word any time to come back here.", 30],
+          ["Enjoy this place a little longer.", 25],
+          ["Now, slowly come back to the room. Feel your feet on the floor.", 15]
+        ],
+        done: "Done. This place is always there for you. Open your eyes slowly."
+      },
+      "med-kind-guide": {
+        name: "Kindness Meditation", from: "med-kind", med: true,
+        lead: "Follow the voice. About 4 minutes. Sending good wishes to yourself and others.",
+        care: "You don't need to feel anything special. If it feels hard or sad, that is normal. You can use words or prayers from your own faith.",
+        steps: [
+          ["Sit comfortably. Place a hand on your chest if you like.", 12],
+          ["Breathe slowly. Think of someone who is easy to love. Family, a friend, or a pet.", 22],
+          ["In your heart, say to them. May you be safe. May you be well. May you be at peace.", 25],
+          ["Notice what you feel. Maybe warmth, maybe nothing. Both are okay.", 20],
+          ["Now, say to yourself. May I be safe. May I be well. May I be at peace.", 25],
+          ["If this feels hard, that is normal. Just repeat it slowly.", 18],
+          ["Think of someone you know a little, like a neighbour or a colleague. May you be safe, well, and at peace.", 25],
+          ["Now, think of everyone in your home, your village, and everywhere. May everyone be safe, well, and at peace.", 28],
+          ["Breathe calmly, and feel this kindness.", 25],
+          ["Slowly, open your eyes when you are ready.", 10]
+        ],
+        done: "Done. Take a little of this kindness with you today."
+      },
       "pmr-guide": {
         name: "Muscle Relaxation", from: "pmr",
         lead: "Follow the voice. About 2 minutes. Repeat if you like.",
@@ -215,6 +297,28 @@ window.MT_CONTENT.en = {
           when: "Worry won't stop.",
           steps: ["Count back from 100 in sevens, or count everything red around you."],
           care: "This is a distraction to settle your mind, not a treatment." },
+        { t: "h", x: "🧘 Guided Meditation" },
+        { t: "p", x: "Find a quiet spot. Use earphones if you have them, and tap **Background** for soft rain or a gentle tone. You can open your eyes and stop at any time." },
+        { t: "ex", id: "med-breath", name: "Mindful Breathing", time: "3 min",
+          when: "A busy mind; you want to feel calmer and more focused.",
+          steps: ["Rest your attention on your breath.", "When your mind wanders, gently bring it back."],
+          care: "If upsetting memories come up, open your eyes and use 5-4-3-2-1.",
+          tool: "med-breath-guide", toolLabel: "Start guided meditation" },
+        { t: "ex", id: "med-body", name: "Body Scan", time: "5 min",
+          when: "Tense or tired body, or before sleep.",
+          steps: ["Move your attention slowly from your feet to your head.", "Notice, and let each part soften."],
+          care: "Skip any part that is painful or injured.",
+          tool: "med-body-guide", toolLabel: "Start guided meditation" },
+        { t: "ex", id: "med-place", name: "Calm Place", time: "5 min",
+          when: "Worried, stressed, or needing a short rest from your thoughts.",
+          steps: ["Picture a calm, safe place.", "Use all your senses: see, hear, feel and smell."],
+          care: "If no place feels safe, imagine a made-up one.",
+          tool: "med-place-guide", toolLabel: "Start guided meditation" },
+        { t: "ex", id: "med-kind", name: "Kindness Meditation", time: "4 min",
+          when: "Feeling angry, lonely, or very hard on yourself.",
+          steps: ["Send good wishes to someone you love, to yourself, and to others."],
+          care: "You can use words or prayers from your own faith.",
+          tool: "med-kind-guide", toolLabel: "Start guided meditation" },
         { t: "p", x: "For many people, prayer or quiet reflection also brings calm. Use what helps you." },
         { t: "card", title: "Still not better?", body: [
           { t: "p", x: "These exercises help, but they are not treatment. If this happens often, tell your team at your next appointment. If you feel unsafe, go to [Urgent Help](#/urgent)." }

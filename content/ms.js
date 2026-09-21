@@ -11,7 +11,7 @@ window.MT_CONTENT.ms = {
     draftBM: "Teks Bahasa Melayu ini masih DRAF dan belum disemak.",
     hello: "Selamat datang. Anda tidak keseorangan.",
     helloP: "Maklumat mudah dan latihan menenangkan diri untuk anda dan keluarga, antara temujanji klinik.",
-    calmSub: "Latihan pernafasan & bertenang, 1–5 minit",
+    calmSub: "Pernafasan, bertenang & meditasi, 1–5 minit",
     sections: "Bahagian",
     disc: "Laman ini menyokong, bukan menggantikan, rawatan daripada doktor dan pasukan anda.",
     priv: "Kami tidak mengumpul sebarang maklumat tentang anda. Tiada log masuk.",
@@ -61,12 +61,94 @@ window.MT_CONTENT.ms = {
     voiceOn: "Suara: hidup", voiceOff: "Suara: tutup",
     voiceNoBM: "Telefon ini tiada suara Bahasa Melayu, jadi sebutan mungkin kurang tepat. Anda boleh tutup suara dan ikut tulisan di skrin.",
     voiceNone: "Pelayar ini tidak dapat memainkan panduan suara. Sila ikut tulisan di skrin.",
-    voice: { inhale: "Tarik nafas", exhale: "Hembus perlahan-lahan", hold: "Tahan" },
+    voice: { inhale: "Tarik nafas, perlahan", exhale: "Hembus, perlahan-lahan", hold: "Tahan, dengan lembut" },
+    amb: { off: "🎵 Bunyi latar: tutup", rain: "🌧 Bunyi latar: hujan", hum: "🎵 Bunyi latar: dengung lembut" },
+    left: "lagi",
     /* Rakaman suara (pilihan). Letak fail MP3 dalam site/audio/ms/ dan senaraikan di sini, contoh:
        "breath-inhale": "audio/ms/breath-inhale.mp3". Kunci yang tiada di sini akan guna suara telefon.
        Senarai kunci ada dalam skrip rakaman (2026-09-18-skrip-rakaman-suara.docx). */
     audio: {},
     guides: {
+      /* ---- Meditasi berpandu (med: true = paparan tenang, loceng, bar kemajuan) ---- */
+      "med-breath-guide": {
+        name: "Nafas Berkesedaran", from: "med-breath", med: true,
+        lead: "Ikut suara. Lebih kurang 3 minit. Anda boleh buka mata bila-bila masa.",
+        care: "Jika ingatan yang menyedihkan atau fikiran yang mengelirukan muncul, buka mata, berhenti, dan guna [latihan 5-4-3-2-1](#/ground).",
+        steps: [
+          ["Duduk dengan selesa. Biarkan bahu jatuh. Pejamkan mata, atau pandang lembut ke lantai.", 12],
+          ["Bernafas seperti biasa. Tidak perlu mengubah apa-apa.", 12],
+          ["Perhatikan udara masuk melalui hidung, dan keluar semula.", 15],
+          ["Rasakan dada atau perut naik perlahan, dan turun perlahan.", 18],
+          ["Pilih satu tempat untuk merehatkan perhatian. Hujung hidung, dada, atau perut.", 18],
+          ["Fikiran akan melayang. Itu perkara biasa.", 12],
+          ["Apabila anda sedar fikiran telah melayang, bawa perhatian kembali kepada nafas, dengan lembut.", 22],
+          ["Tarik nafas. Dan hembus.", 15],
+          ["Setiap kali anda kembali kepada nafas, itulah latihannya. Anda sedang melakukannya dengan baik.", 22],
+          ["Terus bernafas dengan tenang, ikut rentak anda sendiri.", 25],
+          ["Sekarang, perlahan-lahan, perhatikan bunyi di sekeliling anda.", 10]
+        ],
+        done: "Selesai. Buka mata perlahan-lahan apabila anda sedia."
+      },
+      "med-body-guide": {
+        name: "Imbasan Badan", from: "med-body", med: true,
+        lead: "Ikut suara. Lebih kurang 5 minit. Sesuai juga sebelum tidur.",
+        care: "Jika ada bahagian yang sakit atau cedera, cukup perhatikan dari jauh, atau langkau. Jika ingatan yang menyedihkan muncul, buka mata dan guna [latihan 5-4-3-2-1](#/ground).",
+        steps: [
+          ["Baring atau duduk dengan selesa. Pejamkan mata jika anda mahu.", 12],
+          ["Tarik nafas perlahan, dan hembus panjang. Biarkan badan menjadi berat.", 15],
+          ["Bawa perhatian ke tapak kaki. Perhatikan apa sahaja yang anda rasa. Hangat, sejuk, atau tiada rasa langsung.", 25],
+          ["Naik ke buku lali dan betis. Jika ada rasa tegang, biarkan ia lembut dengan setiap hembusan.", 25],
+          ["Sekarang lutut dan paha. Rasakan berat kaki anda disokong.", 22],
+          ["Pinggul dan bahagian bawah belakang. Hembus, dan biarkan ia longgar.", 22],
+          ["Perut. Rasakan perut naik dan turun bersama nafas.", 22],
+          ["Dada dan bahagian atas belakang. Tiada apa yang perlu diubah. Hanya perhatikan.", 22],
+          ["Tangan dan jari. Biarkan tangan berehat, berat dan lembut.", 22],
+          ["Lengan dan bahu. Biarkan bahu jatuh, jauh dari telinga.", 22],
+          ["Leher dan rahang. Longgarkan rahang. Biarkan gigi tidak rapat.", 22],
+          ["Muka. Dahi, mata dan pipi. Biarkan muka menjadi tenang.", 22],
+          ["Sekarang rasakan seluruh badan anda, dari hujung kaki hingga kepala, bernafas dengan tenang.", 30],
+          ["Perlahan-lahan, gerakkan jari tangan dan jari kaki.", 12]
+        ],
+        done: "Selesai. Ambil masa sebelum anda bangun."
+      },
+      "med-place-guide": {
+        name: "Tempat Yang Tenang", from: "med-place", med: true,
+        lead: "Ikut suara. Lebih kurang 5 minit. Bayangkan satu tempat yang membuat anda rasa tenang dan selamat.",
+        care: "Jika tiada tempat yang terasa selamat, bayangkan tempat rekaan. Jika ingatan yang menyedihkan muncul, buka mata, rasakan kaki di lantai, dan guna [latihan 5-4-3-2-1](#/ground).",
+        steps: [
+          ["Duduk atau baring dengan selesa. Pejamkan mata, atau pandang lembut ke bawah.", 12],
+          ["Bernafas perlahan beberapa kali. Biarkan hembusan lebih panjang daripada tarikan.", 18],
+          ["Bayangkan satu tempat di mana anda rasa tenang dan selamat. Ia boleh jadi tempat sebenar, seperti kampung, tepi sungai atau kebun. Atau tempat yang anda reka sendiri.", 30],
+          ["Lihat sekeliling tempat itu. Apa warna yang anda nampak? Bagaimana cahayanya?", 25],
+          ["Dengar. Mungkin bunyi air, angin, burung, atau hanya sunyi.", 25],
+          ["Rasakan. Mungkin angin sejuk di kulit, tanah di bawah kaki, atau cahaya matahari yang hangat.", 25],
+          ["Hidu. Mungkin bau hujan, bunga, atau makanan kegemaran anda.", 22],
+          ["Di sini, tiada apa yang perlu anda buat. Anda boleh berehat.", 25],
+          ["Rasakan badan anda menjadi lebih tenang, dan lebih ringan.", 25],
+          ["Jika mahu, beri tempat ini satu perkataan, seperti tenang, atau rumah. Anda boleh ingat perkataan ini bila-bila masa untuk kembali ke sini.", 30],
+          ["Nikmati tempat ini seketika lagi.", 25],
+          ["Sekarang, perlahan-lahan kembali ke bilik ini. Rasakan kaki anda di lantai.", 15]
+        ],
+        done: "Selesai. Tempat ini sentiasa ada untuk anda. Buka mata perlahan-lahan."
+      },
+      "med-kind-guide": {
+        name: "Kebaikan & Kasih Sayang", from: "med-kind", med: true,
+        lead: "Ikut suara. Lebih kurang 4 minit. Menghantar harapan yang baik kepada diri sendiri dan orang lain.",
+        care: "Tidak perlu rasa sesuatu yang istimewa. Jika terasa sukar atau sedih, itu biasa. Anda boleh guna kata-kata atau doa mengikut kepercayaan anda sendiri.",
+        steps: [
+          ["Duduk dengan selesa. Letakkan tangan di dada jika anda mahu.", 12],
+          ["Bernafas perlahan. Fikirkan seseorang yang mudah anda sayangi. Keluarga, kawan, atau haiwan peliharaan.", 22],
+          ["Dalam hati, ucapkan kepadanya. Semoga kamu selamat. Semoga kamu sihat. Semoga kamu tenang.", 25],
+          ["Perhatikan apa yang anda rasa. Mungkin hangat, mungkin tiada apa-apa. Kedua-duanya tidak mengapa.", 20],
+          ["Sekarang, ucapkan kepada diri sendiri. Semoga saya selamat. Semoga saya sihat. Semoga saya tenang.", 25],
+          ["Jika terasa sukar, itu biasa. Cukup ulang dengan perlahan.", 18],
+          ["Fikirkan seseorang yang anda kenal sedikit, seperti jiran atau rakan sekerja. Semoga kamu selamat, sihat, dan tenang.", 25],
+          ["Kini, fikirkan semua orang di rumah anda, di kampung anda, dan di mana-mana sahaja. Semoga semua selamat, sihat, dan tenang.", 28],
+          ["Bernafas dengan tenang, dan rasakan kebaikan ini.", 25],
+          ["Perlahan-lahan, buka mata apabila anda sedia.", 10]
+        ],
+        done: "Selesai. Bawa sedikit kebaikan ini bersama anda hari ini."
+      },
       "pmr-guide": {
         name: "Relaksasi Otot", from: "pmr",
         lead: "Ikut suara. Lebih kurang 2 minit. Ulang jika anda mahu.",
@@ -215,6 +297,28 @@ window.MT_CONTENT.ms = {
           when: "Kerisauan tidak mahu berhenti.",
           steps: ["Kira mundur dari 100, tolak 7 setiap kali, atau kira semua benda berwarna merah di sekeliling anda."],
           care: "Ini cara mengalih perhatian untuk menenangkan fikiran, bukan rawatan." },
+        { t: "h", x: "🧘 Meditasi Berpandu" },
+        { t: "p", x: "Cari tempat yang tenang. Pakai fon telinga jika ada, dan tekan **Bunyi latar** untuk bunyi hujan atau dengung lembut. Anda boleh buka mata dan berhenti bila-bila masa." },
+        { t: "ex", id: "med-breath", name: "Nafas Berkesedaran", time: "3 minit",
+          when: "Fikiran sibuk, mahu rasa lebih tenang dan fokus.",
+          steps: ["Rehatkan perhatian pada nafas.", "Apabila fikiran melayang, bawa ia kembali dengan lembut."],
+          care: "Jika ingatan yang menyedihkan muncul, buka mata dan guna latihan 5-4-3-2-1.",
+          tool: "med-breath-guide", toolLabel: "Mula meditasi berpandu" },
+        { t: "ex", id: "med-body", name: "Imbasan Badan", time: "5 minit",
+          when: "Badan tegang, penat, atau sebelum tidur.",
+          steps: ["Bawa perhatian perlahan-lahan dari tapak kaki hingga ke kepala.", "Perhatikan, dan biarkan setiap bahagian menjadi lembut."],
+          care: "Langkau bahagian yang sakit atau cedera.",
+          tool: "med-body-guide", toolLabel: "Mula meditasi berpandu" },
+        { t: "ex", id: "med-place", name: "Tempat Yang Tenang", time: "5 minit",
+          when: "Risau, tertekan, atau perlu rehat seketika daripada fikiran.",
+          steps: ["Bayangkan tempat yang tenang dan selamat.", "Guna semua deria: lihat, dengar, rasa dan hidu."],
+          care: "Jika tiada tempat yang terasa selamat, bayangkan tempat rekaan.",
+          tool: "med-place-guide", toolLabel: "Mula meditasi berpandu" },
+        { t: "ex", id: "med-kind", name: "Kebaikan & Kasih Sayang", time: "4 minit",
+          when: "Rasa marah, sunyi, atau terlalu mengkritik diri sendiri.",
+          steps: ["Hantar harapan yang baik kepada orang tersayang, diri sendiri, dan orang lain."],
+          care: "Anda boleh guna kata-kata atau doa mengikut kepercayaan anda sendiri.",
+          tool: "med-kind-guide", toolLabel: "Mula meditasi berpandu" },
         { t: "p", x: "Bagi ramai orang, berdoa atau bertafakur dengan tenang juga membawa ketenangan. Gunakan apa yang membantu anda." },
         { t: "card", title: "Masih tidak lega?", body: [
           { t: "p", x: "Latihan ini membantu, tetapi ia bukan rawatan. Jika perasaan ini kerap berlaku, beritahu pasukan anda pada temujanji seterusnya. Jika anda rasa tidak selamat, pergi ke [Bantuan Segera](#/urgent)." }
