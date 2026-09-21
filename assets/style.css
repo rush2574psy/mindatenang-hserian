@@ -281,3 +281,18 @@ details.sit .in{padding:0 16px 16px;display:grid;gap:10px}
 .btnrow{display:flex;gap:10px;flex-wrap:wrap}
 .mt12{margin-top:12px}
 .nojs{padding:20px 0}
+
+/* v0.5 — guided meditation: calm orb + progress bar */
+.guide.med{text-align:center}
+.guide.med .row{justify-content:center}
+.orb{position:relative;width:132px;height:132px;margin:6px auto 14px}
+.orb::before,.orb i{content:"";position:absolute;inset:0;border-radius:50%}
+.orb::before{background:radial-gradient(circle,var(--mist) 0%,transparent 70%);opacity:.9}
+.orb i{inset:30px;background:radial-gradient(circle at 40% 35%,#99F6E4,var(--teal));box-shadow:0 0 28px rgba(45,212,191,.35)}
+.guide.on .orb::before,.guide.on .orb i{animation:orb 10s ease-in-out infinite}
+@keyframes orb{0%,100%{transform:scale(1)}50%{transform:scale(1.14)}}
+.gbar{height:4px;border-radius:2px;background:var(--line);overflow:hidden;margin:0 auto 14px;max-width:320px}
+.gbar i{display:block;height:100%;width:0;background:var(--teal);transition:width 1s linear}
+.guide.med .gtext{font-weight:600;font-size:1.2rem;line-height:1.5}
+.gnum.gleft{font-size:.9rem;font-weight:600;color:var(--muted)}
+@media (prefers-reduced-motion: reduce){ .guide.on .orb::before,.guide.on .orb i{animation:none} .gbar i{transition:none} }

@@ -5,7 +5,7 @@
   "use strict";
 
   var SITE = {
-    version: "0.4",
+    version: "0.5",
     reviewed: "21/09/2026",
     draft: true            // set to false after HOD sign-off: hides the draft banner
   };
@@ -67,29 +67,68 @@
   var voiceOn = store.get("mt-voice") !== "0";
   var curAudio = null;
   var hasTTS = "speechSynthesis" in window;
+  // Softer voice: among voices for the language, prefer natural/neural and gentle (usually female)
+  // voices; avoid robotic "compact"/eSpeak ones. Guide text only (no personal data) is spoken.
+  var SOFT = /yasmin|amira|damayanti|gadis|siti|nurul|samantha|karen|moira|tessa|serena|fiona|victoria|susan|zira|hazel|libby|sonia|maisie|aria|jenny|natasha|clara|emma|ava|allison|female|wanita/;
+  var HARD = /osman|rizwan|ardi|david|mark|george|daniel|alex|fred|ryan|guy|thomas|william|male/;
+  var voiceCache = {};
+  function vscore(v) {
+    var n = (v.name || "").toLowerCase(), sc = 0;
+    if (/natural|neural|enhanced|premium|siri/.test(n)) sc += 4;
+    if (SOFT.test(n)) sc += 3; else if (HARD.test(n)) sc -= 2;
+    if (/compact|espeak|robot/.test(n)) sc -= 4;
+    if (v.localService) sc += 1;
+    return sc;
+  }
   function pickVoice() {
     if (!hasTTS) return null;
+    if (voiceCache[lang]) return voiceCache[lang];
     var vs = speechSynthesis.getVoices() || [];
     var want = lang === "ms" ? ["ms", "id"] : ["en"];   // no Malay voice? Indonesian reads BM well
     for (var w = 0; w < want.length; w++) {
+      var best = null, bs = -99;
       for (var i = 0; i < vs.length; i++) {
-        if (vs[i].lang && vs[i].lang.toLowerCase().replace("_", "-").indexOf(want[w]) === 0) return vs[i];
+        if (vs[i].lang && vs[i].lang.toLowerCase().replace("_", "-").indexOf(want[w]) === 0) {
+          var sc = vscore(vs[i]);
+          if (sc > bs) { bs = sc; best = vs[i]; }
+        }
       }
+      if (best) { voiceCache[lang] = best; return best; }
     }
     return null;
   }
-  function tts(text, rate) {
-    if (!hasTTS) return;
-    try {   // a voice problem must never stop the exercise itself
-      var utt = new SpeechSynthesisUtterance(text), v = pickVoice();
-      utt.lang = v ? v.lang : (lang === "ms" ? "ms-MY" : "en-GB");
-      if (v) { try { utt.voice = v; } catch (e) {} }
-      utt.rate = rate || 0.85;
-      speechSynthesis.speak(utt);
-      return utt;
-    } catch (e) { return null; }
+  var VOICE = { rate: 0.8, pitch: 0.95, volume: 0.9, gap: 600 };   // calm pace + a short pause between phrases
+  var speakToken = 0;
+  function phrases(text) {
+    return String(text).split(/\n+/).reduce(function (a, line) {
+      return a.concat(line.match(/[^.!?…]+[.!?…]*["”']?/g) || []);
+    }, []).map(function (x) { return x.trim(); }).filter(function (x) { return /[0-9A-Za-zÀ-ÿ]/.test(x); });
+  }
+  // Speaks text one phrase at a time, with a gentle pause between. Returns a handle whose onend fires at the end.
+  function tts(text, rate, gap) {
+    if (!hasTTS) return null;
+    var ctl = { onend: null }, my = ++speakToken, parts = phrases(text), i = 0, v = pickVoice();
+    function next() {
+      if (my !== speakToken) return;
+      if (i >= parts.length) { if (ctl.onend) ctl.onend(); return; }
+      var t = parts[i++], fired = false, safety;
+      function done() { if (fired) return; fired = true; clearTimeout(safety); setTimeout(next, gap == null ? VOICE.gap : gap); }
+      try {   // a voice problem must never stop the exercise itself
+        var utt = new SpeechSynthesisUtterance(t);
+        utt.lang = v ? v.lang : (lang === "ms" ? "ms-MY" : "en-GB");
+        if (v) { try { utt.voice = v; } catch (e) {} }
+        utt.rate = rate || VOICE.rate; utt.pitch = VOICE.pitch; utt.volume = VOICE.volume;
+        utt.onend = done; utt.onerror = done;
+        speechSynthesis.speak(utt);
+        // some phones never fire onend: move on after a generous estimate (speak() queues, so no overlap)
+        safety = setTimeout(done, 2500 + t.split(/\s+/).length * 650 / (rate || VOICE.rate));
+      } catch (e) { done(); }
+    }
+    next();
+    return ctl;
   }
   function hush() {
+    speakToken++;
     if (curAudio) { try { curAudio.pause(); } catch (e) {} curAudio = null; }
     if (hasTTS) { try { speechSynthesis.cancel(); } catch (e) {} }
   }
@@ -100,6 +139,7 @@
     if (file) {
       try {
         curAudio = new Audio(file);
+        curAudio.volume = 0.9;
         var pr = curAudio.play();
         if (pr && pr.catch) pr.catch(function () { tts(text); });
         return;
@@ -107,6 +147,89 @@
     }
     tts(text);
   }
+  /* ---------- soft background sound + bell ----------
+     Generated on the phone with Web Audio: no sound files, nothing downloaded or sent.
+     Off by default; plays only while an exercise is running. */
+  var AC = window.AudioContext || window.webkitAudioContext;
+  var AMBS = ["off", "rain", "hum"];
+  var amb = AMBS.indexOf(store.get("mt-amb")) > 0 ? store.get("mt-amb") : "off";
+  var actx = null, ambNode = null, ambEnd = null;
+  function ctx() {
+    if (!AC) return null;
+    try { if (!actx) actx = new AC(); if (actx.state === "suspended") actx.resume(); } catch (e) { actx = null; }
+    return actx;
+  }
+  function makeRain(c) {
+    var len = c.sampleRate * 4, buf = c.createBuffer(1, len, c.sampleRate), d = buf.getChannelData(0);
+    var b0 = 0, b1 = 0, b2 = 0;
+    for (var i = 0; i < len; i++) {   // pink-ish noise
+      var w = Math.random() * 2 - 1;
+      b0 = 0.99765 * b0 + w * 0.0990460; b1 = 0.96300 * b1 + w * 0.2965164; b2 = 0.57000 * b2 + w * 1.0526913;
+      d[i] = (b0 + b1 + b2 + w * 0.1848) * 0.18;
+    }
+    var src = c.createBufferSource(); src.buffer = buf; src.loop = true;
+    var lp = c.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 1100;
+    var hp = c.createBiquadFilter(); hp.type = "highpass"; hp.frequency.value = 180;
+    src.connect(hp); hp.connect(lp);
+    src.start();
+    return { out: lp, stop: function () { try { src.stop(); } catch (e) {} } };
+  }
+  function makeHum(c) {
+    var mix = c.createGain(); mix.gain.value = 0.35;
+    var lp = c.createBiquadFilter(); lp.type = "lowpass"; lp.frequency.value = 700;
+    var oscs = [[110, 0.5], [164.81, 0.3], [220.4, 0.18], [329.6, 0.06]].map(function (f) {
+      var o = c.createOscillator(), g = c.createGain();
+      o.type = "sine"; o.frequency.value = f[0]; g.gain.value = f[1];
+      o.connect(g); g.connect(mix); o.start(); return o;
+    });
+    var lfo = c.createOscillator(), lg = c.createGain();   // slow swell, like breathing
+    lfo.frequency.value = 0.09; lg.gain.value = 0.12; lfo.connect(lg); lg.connect(mix.gain); lfo.start();
+    mix.connect(lp);
+    return { out: lp, stop: function () { oscs.concat([lfo]).forEach(function (o) { try { o.stop(); } catch (e) {} }); } };
+  }
+  function ambStart() {
+    clearTimeout(ambEnd);
+    if (amb === "off" || ambNode) return;
+    var c = ctx(); if (!c) return;
+    try {
+      var n = amb === "rain" ? makeRain(c) : makeHum(c), g = c.createGain();
+      g.gain.setValueAtTime(0.0001, c.currentTime);
+      g.gain.linearRampToValueAtTime(amb === "rain" ? 0.22 : 0.16, c.currentTime + 3);   // fade in
+      n.out.connect(g); g.connect(c.destination);
+      ambNode = { n: n, g: g };
+    } catch (e) { ambNode = null; }
+  }
+  function ambStop() {
+    if (!ambNode || !actx) { ambNode = null; return; }
+    var a = ambNode, t = actx.currentTime; ambNode = null;
+    try {
+      a.g.gain.cancelScheduledValues(t); a.g.gain.setValueAtTime(a.g.gain.value, t);
+      a.g.gain.linearRampToValueAtTime(0.0001, t + 1.5);   // fade out
+      setTimeout(function () { a.n.stop(); try { a.g.disconnect(); } catch (e) {} }, 1700);
+    } catch (e) { a.n.stop(); }
+  }
+  function bell() {   // one soft bell at the start and end of a meditation
+    if (!voiceOn && amb === "off") return;
+    var c = ctx(); if (!c) return;
+    try {
+      var t = c.currentTime, out = c.createGain();
+      out.gain.setValueAtTime(0.0001, t); out.gain.linearRampToValueAtTime(0.18, t + 0.02);
+      out.gain.exponentialRampToValueAtTime(0.0001, t + 4.5);
+      out.connect(c.destination);
+      [[528, 1], [1056, 0.25], [1584, 0.08]].forEach(function (f) {
+        var o = c.createOscillator(), g = c.createGain();
+        o.type = "sine"; o.frequency.value = f[0]; g.gain.value = f[1];
+        o.connect(g); g.connect(out); o.start(t); o.stop(t + 4.6);
+      });
+    } catch (e) {}
+  }
+  function ambBtn() {
+    if (!AC) return "";
+    var u = U();
+    return '<button class="tbtn vbtn" type="button" id="atoggle" aria-pressed="' + (amb !== "off") + '">' +
+      esc(u.amb[amb]) + "</button>";
+  }
+
   function voiceBtn() {
     var u = U();
     if (!hasTTS && !Object.keys(u.audio || {}).length) return "";
@@ -285,7 +408,7 @@
       '<a href="#/breathe-box"' + (mode === "box" ? ' aria-current="page"' : "") + ">4-4-4-4</a></nav>" +
       '<div class="stage" aria-hidden="true"><div class="halo"></div><div class="ball" id="ball"></div><div class="count" id="count"></div></div>' +
       '<p class="phase" id="phase" aria-live="polite">' + esc(u.ready) + "</p>" +
-      '<div class="row"><button class="go" type="button" id="bstart">' + esc(u.start) + "</button>" + voiceBtn() + "</div>" +
+      '<div class="row"><button class="go" type="button" id="bstart">' + esc(u.start) + "</button>" + voiceBtn() + ambBtn() + "</div>" +
       voiceNote() +
       '<p class="cycles" id="cycles">' + esc(u.rounds) + ": 0</p>" +
       '<p class="caution"><span class="lbl">' + esc(u.care) + "</span> " + fmt(ex.care) + "</p></div>";
@@ -310,22 +433,35 @@
   /* ---------- timed voice-guided exercises (muscle relaxation, 1-minute pause) ---------- */
   function guideView(id) {
     var u = U(), g = u.guides[id];
+    var top = g.med
+      ? '<div class="orb" aria-hidden="true"><i></i></div><div class="gbar" aria-hidden="true"><i id="gbar"></i></div>'
+      : '<div class="pips" aria-hidden="true">' + g.steps.map(function () { return "<i></i>"; }).join("") + "</div>";
     return banners() + '<section class="pagehead"><a class="back" href="#/calm/' + g.from + '">' + esc(u.back) + "</a><h1>" + esc(g.name) + "</h1>" +
       '<p class="lead">' + fmt(g.lead) + "</p></section>" +
-      '<article class="card guide"><div class="pips" aria-hidden="true">' + g.steps.map(function () { return "<i></i>"; }).join("") + "</div>" +
+      '<article class="card guide' + (g.med ? " med" : "") + '" id="gcard">' + top +
       '<p class="gtext" id="gtext" aria-live="polite">' + esc(u.ready) + "</p>" +
-      '<div class="gnum" id="gcount" aria-hidden="true"></div>' +
-      '<div class="row"><button class="go" type="button" id="gstart">' + esc(u.start) + "</button>" + voiceBtn() + "</div>" +
+      '<div class="gnum' + (g.med ? " gleft" : "") + '" id="gcount" aria-hidden="true"></div>' +
+      '<div class="row"><button class="go" type="button" id="gstart">' + esc(u.start) + "</button>" + voiceBtn() + ambBtn() + "</div>" +
       voiceNote() + "</article>" +
       '<p class="caution mt12"><span class="lbl">' + esc(u.care) + "</span> " + fmt(g.care) + "</p>";
   }
+  function mmss(t) { return Math.floor(t / 60) + ":" + ("0" + (t % 60)).slice(-2); }
   function runGuide(id, onEnd) {
-    var g = U().guides[id], i = 0, sec = 0;
+    var g = U().guides[id], i = 0, sec = 0, gone = 0;
+    var total = g.steps.reduce(function (a, st) { return a + st[1]; }, 0);
     var tx = document.getElementById("gtext"), cn = document.getElementById("gcount"),
+      bar = document.getElementById("gbar"), card = document.getElementById("gcard"),
       pips = app.querySelectorAll(".guide .pips i");
+    if (card) card.classList.add("on");
+    ambStart();
+    if (g.med) bell();
     function step() {
       if (i >= g.steps.length) {
-        tx.textContent = g.done; cn.textContent = ""; say(g.done, id + "-done"); timer = null; onEnd(); return;
+        tx.textContent = g.done; cn.textContent = ""; if (card) card.classList.remove("on");
+        if (g.med) bell();
+        setTimeout(function () { say(g.done, id + "-done"); }, g.med ? 1200 : 0);
+        timer = null; ambEnd = setTimeout(ambStop, 6000);   // let the sound fade after the last words
+        onEnd(); return;
       }
       for (var k = 0; k < pips.length; k++) pips[k].className = k <= i ? "on" : "";
       tx.textContent = g.steps[i][0];
@@ -333,10 +469,12 @@
       sec = g.steps[i][1]; tick();
     }
     function tick() {
-      cn.textContent = sec;
-      timer = setTimeout(function () { sec--; if (sec > 0) tick(); else { i++; step(); } }, 1000);
+      if (g.med) { cn.textContent = mmss(total - gone) + " " + U().left; if (bar) bar.style.width = (100 * gone / total) + "%"; }
+      else cn.textContent = sec;
+      timer = setTimeout(function () { sec--; gone++; if (sec > 0) tick(); else { i++; step(); } }, 1000);
     }
-    step();
+    if (g.med) timer = setTimeout(step, 1500);   // let the bell ring first
+    else step();
   }
 
   /* ---------- breathing guide ---------- */
@@ -349,6 +487,7 @@
     var ball = document.getElementById("ball"), c = document.getElementById("count"),
       p = document.getElementById("phase"), cy = document.getElementById("cycles");
     var i = 0, sec = 0, rounds = 0;
+    ambStart();
     function phaseStart() {
       var k = seq[i][0], dur = seq[i][1], scale = seq[i][2];
       p.textContent = u[k];
@@ -386,6 +525,7 @@
   function render(keepScroll) {
     stopBreath();
     stopSpeech();
+    ambStop();
     var u = U(), r = route(), html;
     document.documentElement.lang = lang;
     document.documentElement.style.setProperty("--fs", big ? "21px" : "18px");
@@ -422,7 +562,7 @@
   function bind(r) {
     var bs = document.getElementById("bstart");
     if (bs) bs.onclick = function () {
-      if (timer) { stopBreath(); hush(); resetBall(); bs.textContent = U().start; }
+      if (timer) { stopBreath(); hush(); ambStop(); resetBall(); bs.textContent = U().start; }
       else { bs.textContent = U().stop; runBreath(r === "breathe-box" ? "box" : "b46"); }
     };
     var gn = document.getElementById("gnext");
@@ -437,9 +577,19 @@
       vt.textContent = (voiceOn ? "🔈 " : "🔇 ") + (voiceOn ? U().voiceOn : U().voiceOff);
       if (voiceOn && r === "ground") speakGround();
     };
+    var at = document.getElementById("atoggle");
+    if (at) at.onclick = function () {
+      amb = AMBS[(AMBS.indexOf(amb) + 1) % AMBS.length]; store.set("mt-amb", amb);
+      at.setAttribute("aria-pressed", amb !== "off" ? "true" : "false");
+      at.textContent = U().amb[amb];
+      var running = timer && (document.getElementById("gcard") || document.getElementById("ball"));
+      if (ambNode) { var old = ambNode; ambNode = null; try { old.g.gain.setValueAtTime(0.0001, actx.currentTime); } catch (e) {} setTimeout(function () { old.n.stop(); }, 50); }
+      if (running) ambStart();
+      else if (amb !== "off") { ambStart(); setTimeout(ambStop, 2500); }   // short preview of the sound
+    };
     var gs = document.getElementById("gstart");
     if (gs) gs.onclick = function () {
-      if (timer) { stopBreath(); hush(); gs.textContent = U().start; document.getElementById("gtext").textContent = U().ready; document.getElementById("gcount").textContent = ""; }
+      if (timer) { stopBreath(); hush(); ambStop(); var gc = document.getElementById("gcard"); if (gc) gc.classList.remove("on"); gs.textContent = U().start; document.getElementById("gtext").textContent = U().ready; document.getElementById("gcount").textContent = ""; }
       else { gs.textContent = U().stop; runGuide(r, function () { gs.textContent = U().again; }); }
     };
     var pr = document.getElementById("doprint");
@@ -475,8 +625,8 @@
   }
   if (!("speechSynthesis" in window)) sp.hidden = true;
   sp.onclick = function () {
-    if (speechSynthesis.speaking) { stopSpeech(); return; }
-    var utt = tts(app.innerText.replace(/[‹›🔈🔇]/g, ""), 0.92);
+    if (sp.getAttribute("aria-pressed") === "true") { stopSpeech(); return; }
+    var utt = tts(app.innerText.replace(/[‹›🔈🔇🌧🎵]/g, ""), 0.88, 300);
     if (!utt) return;
     utt.onend = function () { sp.setAttribute("aria-pressed", "false"); };
     sp.setAttribute("aria-pressed", "true");
@@ -486,6 +636,7 @@
   document.getElementById("lang-ms").onclick = function () { lang = "ms"; store.set("mt-lang", "ms"); render(true); };
   document.getElementById("lang-en").onclick = function () { lang = "en"; store.set("mt-lang", "en"); render(true); };
   if (hasTTS && speechSynthesis.addEventListener) speechSynthesis.addEventListener("voiceschanged", function () {
+    voiceCache = {};
     var n = document.getElementById("vnote");
     if (n) n.textContent = (lang === "ms" && !pickVoice()) ? U().voiceNoBM : "";
   });
