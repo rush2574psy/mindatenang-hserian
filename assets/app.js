@@ -5,7 +5,7 @@
   "use strict";
 
   var SITE = {
-    version: "0.3",
+    version: "0.4",
     reviewed: "21/09/2026",
     draft: true            // set to false after HOD sign-off: hides the draft banner
   };
@@ -20,6 +20,9 @@
     { key: "mhak",   tel: "082231459",   show: "082-231 459" }
   ];
   var DEPT = { tel: "0133362896", show: "013-336 2896" };
+
+  // Anonymous suggestion form (Google Forms, owned by the unit). Opens in a new tab; nothing is sent from this site.
+  var FEEDBACK_URL = "https://docs.google.com/forms/d/e/1FAIpQLScMLOH_tChxjNBxlmL39CdWqtF9_FIYZ2uqgoRFDm5vqwy2TA/viewform";
 
   // Colour of the rounded square behind each page's icon.
   var TONE = {
@@ -208,7 +211,7 @@
         (q.hint ? '<p class="hint">' + fmt(q.hint) + "</p>" : "") + inner + "</div>";
     }).join("") +
       '<p class="fine">' + esc(u.checkPrivacy) + "</p>" +
-      '<div class="noprint" style="display:flex;gap:10px;flex-wrap:wrap">' +
+      '<div class="noprint btnrow">' +
       '<button class="go" type="button" id="doprint">' + esc(u.print) + "</button>" +
       '<button class="go ghost" type="button" id="doclear">' + esc(u.clear) + "</button></div></form>";
   }
@@ -301,7 +304,7 @@
     }
     return banners() + '<section class="pagehead"><a class="back" href="#/calm">' + esc(u.back) + "</a><h1>" + esc(g.name) +
       '</h1></section><article class="card" aria-live="polite">' + body + "</article>" +
-      '<div class="row" style="margin-top:12px">' + voiceBtn() + "</div>" + voiceNote();
+      '<div class="row mt12">' + voiceBtn() + "</div>" + voiceNote();
   }
 
   /* ---------- timed voice-guided exercises (muscle relaxation, 1-minute pause) ---------- */
@@ -314,7 +317,7 @@
       '<div class="gnum" id="gcount" aria-hidden="true"></div>' +
       '<div class="row"><button class="go" type="button" id="gstart">' + esc(u.start) + "</button>" + voiceBtn() + "</div>" +
       voiceNote() + "</article>" +
-      '<p class="caution" style="margin-top:12px"><span class="lbl">' + esc(u.care) + "</span> " + fmt(g.care) + "</p>";
+      '<p class="caution mt12"><span class="lbl">' + esc(u.care) + "</span> " + fmt(g.care) + "</p>";
   }
   function runGuide(id, onEnd) {
     var g = U().guides[id], i = 0, sec = 0;
@@ -396,6 +399,9 @@
     else if (P(r)) html = page(r);
     else { html = home(); r = ""; }
 
+    html += '<footer class="sitefoot"><p>' + esc(u.fbAsk) + '</p>' +
+      '<a href="' + FEEDBACK_URL + '" target="_blank" rel="noopener noreferrer">' + esc(u.fbLink) + ' \u2197</a>' +
+      '<small>' + esc(u.fbNote) + "</small></footer>";
     app.innerHTML = html;
     var pg = P(r);
     var tname = pg ? pg.title : r.indexOf("breathe") === 0 ? u.breath[r === "breathe-box" ? "box" : "b46"].name

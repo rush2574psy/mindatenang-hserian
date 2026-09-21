@@ -143,6 +143,10 @@ button{font:inherit;color:inherit}
 .tile{min-height:92px;padding:14px;border-radius:14px;border:1px solid var(--line);background:var(--surface);color:var(--ink);text-decoration:none;display:flex;flex-direction:column;gap:6px;justify-content:space-between}
 .tile .ic{font-size:1.35rem;line-height:1}
 .tile b{font-size:.98rem;line-height:1.25}
+.sitefoot{margin-top:28px;padding-top:14px;border-top:1px solid var(--line);font-size:.86rem;color:var(--muted);display:grid;gap:4px}
+.sitefoot p{margin:0}
+.sitefoot a{font-weight:700;padding:6px 0;display:inline-block}
+.sitefoot small{font-size:.78rem}
 .note{margin-top:18px;font-size:.86rem;color:var(--muted);display:grid;gap:4px}
 .seclbl{margin:18px 0 8px;font-size:.72rem;font-weight:800;letter-spacing:.08em;text-transform:uppercase;color:var(--muted)}
 
@@ -272,3 +276,8 @@ details.sit .in{padding:0 16px 16px;display:grid;gap:10px}
   .opts label{border:0;padding:0 8px 0 0;min-height:0}
   .card,.box{break-inside:avoid;border-color:#999}
 }
+
+/* utility classes (replace inline styles blocked by the Content-Security-Policy) */
+.btnrow{display:flex;gap:10px;flex-wrap:wrap}
+.mt12{margin-top:12px}
+.nojs{padding:20px 0}
