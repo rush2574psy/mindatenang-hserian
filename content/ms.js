@@ -10,6 +10,31 @@ window.MT_CONTENT.ms = {
     draftSite: "Draf untuk semakan Ketua Jabatan. Kandungan belum diluluskan secara klinikal.",
     draftBM: "Teks Bahasa Melayu ini masih DRAF dan belum disemak.",
     hello: "Selamat datang. Anda tidak keseorangan.",
+    tagline: "Belajar di klinik. Amalkan di rumah.",
+    needTitle: "Apa yang anda perlukan sekarang?",
+    need: [
+      ["🌀", "Saya rasa cemas", "#/breathe-46"],
+      ["🌊", "Saya rasa tertekan", "#/pause-guide"],
+      ["🍃", "Tenangkan fikiran", "#/med-breath-guide"],
+      ["💪", "Badan saya tegang", "#/pmr-guide"],
+      ["🌙", "Saya tak boleh tidur", "#/sleep"],
+      ["🆘", "Saya perlu bantuan sekarang", "#/urgent", true]
+    ],
+    rxNote: "Pasukan rawatan anda mencadangkan latihan ini. Amalkan di rumah, dan beritahu mereka bagaimana hasilnya pada temujanji seterusnya.",
+    vPlay: "▶ Main video",
+    vNote: "Dimainkan dari YouTube (menggunakan data mudah alih). Tiada apa dimuatkan sehingga anda tekan Main.",
+    vYT: "Buka di YouTube",
+    vOpen: "Buka halaman video",
+    vLang: { en: "Bahasa Inggeris, sari kata", ms: "Bahasa Melayu" },
+    reflect: {
+      q: "Bagaimana perasaan anda sekarang?",
+      better: ["Lebih baik", "Bagus. Ingat apa yang membantu. Amalkan lagi esok, dan beritahu pasukan rawatan pada temujanji seterusnya. Anda boleh tambah dalam [pelan menghadapi masalah saya](#/plan)."],
+      same: ["Lebih kurang sama", "Tidak mengapa. Latihan menjadi lebih mudah dengan amalan, dan tidak semua latihan sesuai untuk semua orang. Cuba yang lain: [grounding 5-4-3-2-1](#/ground), [relaksasi otot](#/pmr-guide), atau [Apa yang saya rasa?](#/toolbox)"],
+      worse: ["Lebih teruk", "Berhenti latihan dan bernafas seperti biasa. Duduk di tempat yang selamat. Jika anda rasa tidak selamat atau sangat tidak sihat, pergi ke [Bantuan Segera](#/urgent) sekarang. Jika tidak, beritahu pasukan rawatan pada temujanji seterusnya, atau hubungi unit semasa waktu pejabat."],
+      priv: "Jawapan anda tidak disimpan atau dihantar ke mana-mana."
+    },
+    themeLabel: "Tema warna",
+    themes: { auto: "ikut telefon", light: "cerah", dark: "gelap" },
     helloP: "Maklumat mudah dan latihan menenangkan diri untuk anda dan keluarga, antara temujanji klinik.",
     calmSub: "Pernafasan, bertenang & meditasi, 1–5 minit",
     sections: "Bahagian",
@@ -18,7 +43,8 @@ window.MT_CONTENT.ms = {
     reviewed: "Semakan terakhir:", version: "Versi",
     fbAsk: "Ada cadangan untuk menambah baik laman ini?",
     fbLink: "Beri cadangan (tanpa nama)",
-    fbNote: "Dibuka dalam Google Forms. Jangan tulis maklumat peribadi. Bukan untuk kecemasan.",
+    fbNote: "Untuk cadangan umum sahaja. Jangan sertakan nama, nombor telefon, maklumat kesihatan atau kecemasan. Borang ini dibuka dalam Google Forms.",
+    ext: "(laman luar, dibuka dalam tab baharu)",
     sos: "BANTUAN SEGERA", sosSub: "Kecemasan & talian bantuan",
     back: "‹ Kembali",
     when: "Bila guna:", notice: "Mungkin anda rasa:", care: "Berhati-hati:",
@@ -37,14 +63,23 @@ window.MT_CONTENT.ms = {
       bfkl:  ["Befrienders Kuala Lumpur", "24 jam"],
       kasih: ["Talian Kasih", "24 jam · WhatsApp 019-261 5999"],
       miasa: ["Talian krisis MIASA", "WhatsApp 03-9765 6088"],
-      mhak:  ["Persatuan Kesihatan Mental Kuching", "Telefon untuk waktu operasi"]
+      mhak:  ["Persatuan Kesihatan Mental Sarawak (Kuching)", "Telefon untuk waktu operasi"]
     },
     pattern: "Corak pernafasan",
-    inhale: "Tarik nafas…", exhale: "Hembus…", hold: "Tahan…", ready: "Tekan Mula bila sedia",
-    start: "Mula", stop: "Berhenti", rounds: "Pusingan", next: "Seterusnya", again: "Ulang",
+    inhale: "Tarik nafas…", exhale: "Hembus…", hold: "Tahan…", ready: "Duduk selesa. Tekan Mula bila sedia.",
+    start: "Mula", stop: "Berhenti", rounds: "Pusingan selesai",
+    startOne: "Mula 1 pusingan", startLoop: "Kitar berterusan", again1: "Ulang 1 pusingan",
+    switch46: "Tukar kepada 4–6", quit: "Berhenti & bernafas biasa",
+    quitMsg: "Anda sudah berhenti. Bernafas seperti biasa, perlahan-lahan.",
+    oneDone: "Selesai satu pusingan. Bagus. Ulang jika mahu.",
+    guideOpts: "Pilihan panduan: suara & bunyi latar", next: "Seterusnya", again: "Ulang",
     breath: {
-      b46: { name: "Pernafasan Perlahan 4-6", care: "Bernafas dengan lembut. Jangan paksa tarik nafas besar. Berhenti jika rasa pening." },
-      box: { name: "Pernafasan Kotak", care: "Jika anda ada masalah jantung atau paru-paru, darah tinggi, sedang hamil, atau rasa pening, jangan tahan nafas. Guna 4-6 sahaja." }
+      b46: { name: "Pernafasan Perlahan 4-6", tag: "tarik 4, hembus 6",
+        cycle: "Satu pusingan mengambil **10 saat**: tarik nafas 4, hembus 6.",
+        care: "Bernafas dengan lembut. Jangan paksa tarik nafas besar. Jika rasa pening atau tidak selesa, berhenti dan bernafas seperti biasa." },
+      box: { name: "Pernafasan Kotak", tag: "termasuk tahan nafas",
+        cycle: "Satu pusingan mengambil **16 saat**: tarik nafas 4, tahan 4, hembus 4, tahan 4.",
+        care: "Jangan paksa atau tahan nafas jika ia tidak selesa. Jika anda rasa pening, sesak nafas atau tidak pasti, berhenti dan kembali kepada pernafasan biasa. Anda boleh pilih 4–6 tanpa tahan nafas." }
     },
     ground: {
       name: "Latihan 5-4-3-2-1",
@@ -59,7 +94,7 @@ window.MT_CONTENT.ms = {
       done: "Selesai. Bagus. Hembus nafas perlahan sekali lagi."
     },
     voiceOn: "Suara: hidup", voiceOff: "Suara: tutup",
-    voiceNoBM: "Telefon ini tiada suara Bahasa Melayu, jadi sebutan mungkin kurang tepat. Anda boleh tutup suara dan ikut tulisan di skrin.",
+    voiceNoBM: "Peranti ini mungkin tidak mempunyai suara Bahasa Melayu. Sebutan automatik mungkin kurang tepat; anda boleh matikan suara dan ikut teks di skrin.",
     voiceNone: "Pelayar ini tidak dapat memainkan panduan suara. Sila ikut tulisan di skrin.",
     voice: { inhale: "Tarik nafas, perlahan", exhale: "Hembus, perlahan-lahan", hold: "Tahan, dengan lembut" },
     amb: { off: "🎵 Bunyi latar: tutup", rain: "🌧 Bunyi latar: hujan", hum: "🎵 Bunyi latar: dengung lembut" },
@@ -217,7 +252,7 @@ window.MT_CONTENT.ms = {
           { t: "p", x: "**Cubaan bunuh diri bukan lagi satu jenayah di Malaysia.** Mendapatkan bantuan, untuk diri sendiri atau orang lain, tidak akan menyebabkan sesiapa berdepan masalah dengan polis." }
         ] },
         { t: "h", x: "Perlu bercakap dengan seseorang sekarang?" },
-        { t: "p", x: "Panggilan adalah sulit. Anda tidak perlu terangkan semuanya; cukup katakan anda perlu bercakap." },
+        { t: "p", x: "Anda tidak perlu terangkan semuanya; cukup katakan anda perlu bercakap. Setiap perkhidmatan mempunyai dasar privasi sendiri. Jika ada bahaya segera, hubungi **999**." },
         { t: "helplines" },
         { t: "box", tone: "blue", title: "Bukan kecemasan?", body: [
           { t: "p", x: "Contohnya: kesan sampingan ubat yang ringan, ubat hampir habis, simptom yang perlahan-lahan bertambah teruk, atau soalan tentang temujanji." },
@@ -252,18 +287,18 @@ window.MT_CONTENT.ms = {
           ],
           notice: "Jantung berdegup lebih perlahan dan anda rasa lebih tenang atau mengantuk.",
           care: "Bernafas dengan lembut. Jangan paksa tarik nafas besar. Berhenti jika rasa pening.",
-          tool: "breathe-46" },
+          tool: "breathe-46", video: "breath-nhsinform" },
         { t: "ex", id: "box", name: "Pernafasan Kotak", time: "2–4 minit",
           when: "Anda mahu ikut rentak yang tetap.",
           steps: ["Tarik nafas: kira 4.", "Tahan: kira 4.", "Hembus: kira 4.", "Tahan: kira 4, kemudian ulang."],
-          care: "Jika anda ada masalah jantung atau paru-paru, darah tinggi, sedang hamil, atau rasa pening, jangan tahan nafas. Tarik dan hembus sahaja.",
-          tool: "breathe-box" },
+          care: "Jangan paksa atau tahan nafas jika ia tidak selesa. Jika anda rasa pening, sesak nafas atau tidak pasti, berhenti dan kembali kepada pernafasan biasa. Anda boleh pilih 4–6 tanpa tahan nafas.",
+          tool: "breathe-box", video: "breath-box" },
         { t: "ex", id: "g54321", name: "Latihan 5-4-3-2-1", time: "2–3 minit",
           when: "Panik, fikiran berlumba-lumba, atau rasa jauh atau \"tidak nyata\".",
           body: [{ t: "p", x: "Sebut 5 benda yang anda **nampak**, 4 yang anda boleh **sentuh**, 3 yang anda **dengar**, 2 yang anda **hidu**, dan 1 yang anda **rasa** di mulut." }],
           notice: "Anda rasa lebih \"di sini dan sekarang\".",
           care: "Tiada cara yang salah. Buat ikut kadar anda sendiri.",
-          tool: "ground", toolLabel: "Buat langkah demi langkah" },
+          tool: "ground", toolLabel: "Buat langkah demi langkah", video: "ground-who" },
         { t: "ex", id: "cool", name: "Air Sejuk & Sentuhan", time: "1–3 minit",
           when: "Perasaan yang sangat kuat, atau rasa terasing.",
           steps: [
@@ -287,7 +322,7 @@ window.MT_CONTENT.ms = {
             "Beralih ke bahagian seterusnya."
           ],
           care: "Tegang dengan lembut, jangan sampai sakit. Langkau bahagian yang sakit atau cedera.",
-          tool: "pmr-guide", toolLabel: "Mula dengan panduan suara" },
+          tool: "pmr-guide", toolLabel: "Mula dengan panduan suara", video: "pmr-therapistaid" },
         { t: "ex", id: "pause", name: "Rehat 1 Minit", time: "1 minit",
           when: "Saat sibuk atau tertekan.",
           steps: ["Berhenti.", "Rasakan kaki anda di lantai.", "Perhatikan satu bunyi, satu bau dan satu benda yang anda nampak.", "Hembus nafas perlahan sekali."],
@@ -303,7 +338,7 @@ window.MT_CONTENT.ms = {
           when: "Fikiran sibuk, mahu rasa lebih tenang dan fokus.",
           steps: ["Rehatkan perhatian pada nafas.", "Apabila fikiran melayang, bawa ia kembali dengan lembut."],
           care: "Jika ingatan yang menyedihkan muncul, buka mata dan guna latihan 5-4-3-2-1.",
-          tool: "med-breath-guide", toolLabel: "Mula meditasi berpandu" },
+          tool: "med-breath-guide", toolLabel: "Mula meditasi berpandu", video: "mind-nhs24" },
         { t: "ex", id: "med-body", name: "Imbasan Badan", time: "5 minit",
           when: "Badan tegang, penat, atau sebelum tidur.",
           steps: ["Bawa perhatian perlahan-lahan dari tapak kaki hingga ke kepala.", "Perhatikan, dan biarkan setiap bahagian menjadi lembut."],
@@ -320,6 +355,7 @@ window.MT_CONTENT.ms = {
           care: "Anda boleh guna kata-kata atau doa mengikut kepercayaan anda sendiri.",
           tool: "med-kind-guide", toolLabel: "Mula meditasi berpandu" },
         { t: "p", x: "Bagi ramai orang, berdoa atau bertafakur dengan tenang juga membawa ketenangan. Gunakan apa yang membantu anda." },
+        { t: "go", to: "#/videos", x: "▶ Lagi video untuk ditonton", tone: "ghost" },
         { t: "card", title: "Masih tidak lega?", body: [
           { t: "p", x: "Latihan ini membantu, tetapi ia bukan rawatan. Jika perasaan ini kerap berlaku, beritahu pasukan anda pada temujanji seterusnya. Jika anda rasa tidak selamat, pergi ke [Bantuan Segera](#/urgent)." }
         ] }
@@ -369,7 +405,7 @@ window.MT_CONTENT.ms = {
       title: "Fahami kesihatan mental saya", tileTitle: "Fahami kesihatan mental", icon: "🧠",
       lead: "Masalah kesihatan mental adalah biasa dan boleh dirawat. Meminta bantuan ialah tanda kekuatan.",
       blocks: [
-        { t: "links", items: ["anxiety", "panic", "stress", "depression", "sleep"] }
+        { t: "links", items: ["anxiety", "panic", "stress", "depression", "psychosis", "sleep"] }
       ]
     },
 
@@ -471,6 +507,7 @@ window.MT_CONTENT.ms = {
         ] },
         { t: "h", x: "Elakkan" },
         { t: "p", x: "Alkohol atau tuak, berjudi, dan pil tidur yang bukan dipreskripsi untuk anda." },
+        { t: "video", v: "stress-who" },
         { t: "box", tone: "blue", title: "Bila perlu dapatkan bantuan?", body: [
           { t: "ul", items: [
             "Tekanan telah menjejaskan tidur, kerja atau hubungan anda lebih daripada 2 minggu",
@@ -504,6 +541,7 @@ window.MT_CONTENT.ms = {
           "Jangan berhenti hanya kerana belum rasa perubahan. Bincang dengan doktor dahulu.",
           "Selepas anda rasa lebih baik, rawatan biasanya diteruskan **sekurang-kurangnya 6 bulan**, dan lebih lama jika anda pernah mengalami kemurungan sebelum ini. Doktor anda akan membimbing anda."
         ] },
+        { t: "video", v: "dep-who" },
         { t: "box", tone: "blue", title: "Bila perlu dapatkan bantuan?", body: [
           { t: "ul", items: [
             "Simptom berlarutan lebih daripada 2 minggu, atau semakin teruk",
@@ -512,6 +550,174 @@ window.MT_CONTENT.ms = {
           ] },
           { t: "p", x: "Ada fikiran untuk mencederakan diri atau menamatkan nyawa → [Bantuan Segera](#/urgent) sekarang." }
         ] }
+      ]
+    },
+
+    psychosis: {
+      title: "Psikosis", short: "Apabila fikiran hilang hubungan dengan realiti", icon: "🌫️", parent: "learn", edu: true,
+      blocks: [
+        { t: "h", x: "Apakah psikosis?" },
+        { t: "p", x: "Psikosis bermaksud fikiran hilang sebahagian hubungan dengan realiti. Seseorang mungkin:" },
+        { t: "ul", items: [
+          "mendengar, melihat atau merasa sesuatu yang orang lain tidak alami (contohnya, mendengar suara)",
+          "sangat percaya sesuatu yang orang lain tidak percaya, seperti diperhati, diekori atau akan dicederakan",
+          "berfikir atau bercakap dengan cara yang bercelaru dan sukar difahami"
+        ] },
+        { t: "p", x: "Bagi orang itu, pengalaman ini terasa benar-benar nyata. Sebab itu bertengkar jarang membantu." },
+        { t: "h", x: "Apa puncanya?" },
+        { t: "p", x: "Psikosis ialah tanda, bukan diagnosis. Ia boleh berlaku dalam penyakit seperti skizofrenia, gangguan bipolar atau kemurungan teruk, dan juga akibat dadah (contohnya syabu/metamfetamin atau ganja), berhenti alkohol secara mengejut, sesetengah penyakit fizikal, kurang tidur yang teruk, atau selepas bersalin. Doktor anda akan mencari puncanya." },
+        { t: "box", tone: "teal", body: [
+          { t: "p", x: "**Psikosis boleh dirawat.** Ramai orang pulih dengan baik, terutamanya apabila rawatan dimulakan awal dan diteruskan." }
+        ] },
+        { t: "h", x: "Tanda awal yang perlu diperhatikan" },
+        { t: "ul", items: [
+          "Tidur jauh lebih sedikit, atau jauh lebih banyak",
+          "Menjauhkan diri daripada keluarga dan kawan",
+          "Menjadi curiga atau takut",
+          "Idea yang pelik, atau percakapan yang sukar difahami",
+          "Berhenti kerja, belajar atau menjaga diri",
+          "Berhenti makan ubat"
+        ] },
+        { t: "p", x: "Setiap orang ada coraknya sendiri. Tulis tanda anda dalam [pelan tanda amaran awal saya](#/signs)." },
+        { t: "h", x: "Apa yang membantu bersama rawatan?" },
+        { t: "ul", items: [
+          "Teruskan makan ubat, walaupun anda rasa sihat. Bincang dengan doktor sebelum membuat sebarang perubahan.",
+          "Tidur dan makan pada waktu yang tetap.",
+          "Elakkan alkohol, tuak dan dadah. Ia boleh menyebabkan psikosis berulang.",
+          "Kurangkan tekanan jika boleh, dan ikut rutin harian yang mudah.",
+          "Kekal rapat dengan orang yang menyokong anda.",
+          "Hadir setiap temujanji, dan bawa ahli keluarga jika itu membantu."
+        ] },
+        { t: "h", x: "Untuk keluarga" },
+        { t: "p", x: "Anda tidak perlu bersetuju atau bertengkar tentang kepercayaan yang luar biasa. Balas pada perasaannya: *\"Itu kedengaran menakutkan. Saya ada di sini dengan awak.\"* Lihat [Keluarga & penjaga](#/family) untuk maklumat lanjut." },
+        { t: "box", tone: "blue", title: "Bila perlu dapatkan bantuan?", body: [
+          { t: "ul", items: [
+            "Tanda amaran awal mula kembali",
+            "Ubat telah dihentikan atau tertinggal",
+            "Suara atau kepercayaan menjadi lebih kuat atau lebih mengganggu"
+          ] },
+          { t: "dept" },
+          { t: "p", x: "Jika suara menyuruh orang itu mencederakan diri atau orang lain, atau dia mungkin bertindak kerana kepercayaan yang menakutkan → [Bantuan Segera](#/urgent) sekarang." }
+        ] }
+      ]
+    },
+
+    /* ================= URUS DIRI ================= */
+    manage: {
+      title: "Jaga diri saya", short: "Pelan menghadapi masalah, tanda amaran & rutin harian", icon: "🌱",
+      lead: "Pelan mudah yang anda buat sendiri, bersama pasukan rawatan dan keluarga. Isi, kemudian cetak atau simpan sebagai PDF. Tiada apa-apa disimpan di laman ini.",
+      blocks: [
+        { t: "links", items: ["plan", "signs", "appointment"] },
+        { t: "h", x: "Rutin harian" },
+        { t: "ul", items: [
+          "Bangun dan tidur pada waktu yang lebih kurang sama setiap hari.",
+          "Makan pada waktu yang tetap, dan bergerak setiap hari, walaupun berjalan 10 minit.",
+          "Buat satu perkara yang anda suka dan satu tugas berguna setiap hari.",
+          "Amalkan satu latihan menenangkan diri setiap hari, semasa tenang, bukan hanya ketika krisis: [Tenangkan Diri Sekarang](#/calm)."
+        ] },
+        { t: "h", x: "Ubat dan temujanji" },
+        { t: "ul", items: [
+          "Set penggera harian dalam telefon untuk ubat anda. Kotak ubat mingguan juga membantu.",
+          "Masukkan tarikh temujanji atau suntikan seterusnya dalam kalendar telefon, dan set peringatan sehari sebelumnya.",
+          "Ubat hampir habis? Hubungi unit sebelum ia habis.",
+          "Jangan berhenti atau tukar ubat tanpa berbincang dengan doktor anda."
+        ] },
+        { t: "dept" }
+      ]
+    },
+
+    plan: {
+      title: "Pelan menghadapi masalah saya", short: "Apa yang membantu saya ketika keadaan sukar", icon: "📝", parent: "manage",
+      lead: "Isi semasa anda tenang, sebaik-baiknya bersama pasukan rawatan atau orang yang anda percayai. Simpan salinan bercetak di tempat yang mudah dicari.",
+      blocks: [
+        { t: "checklist", items: [
+          { q: "Apabila saya mula rasa susah, saya perasan:", hint: "Fikiran, perasaan, tanda pada badan, atau perkara yang saya buat." },
+          { q: "Perkara yang membantu saya bertenang:", ticks: [
+            "[Pernafasan perlahan](#/breathe-46)",
+            "[Grounding 5-4-3-2-1](#/ground)",
+            "[Relaksasi otot](#/pmr-guide)",
+            "Berdoa atau bertafakur",
+            "Berjalan atau berkebun",
+            "Bercakap dengan seseorang",
+            "Muzik",
+            "Air sejuk pada tangan"
+          ], text: true },
+          { q: "Orang yang boleh saya hubungi (nama dan nombor telefon):" },
+          { q: "Tempat di mana saya rasa tenang dan selamat:" },
+          { q: "Perkara yang perlu dielakkan semasa saya rasa susah:", ticks: [
+            "Alkohol atau tuak",
+            "Tidur lewat",
+            "Bersendirian sepanjang hari",
+            "Tertinggal ubat",
+            "Membaca berita atau media sosial yang mengganggu"
+          ], text: true },
+          { q: "Sebab saya untuk terus bertahan (orang tersayang, agama, harapan):" },
+          { q: "Nombor pasukan rawatan saya:", hint: "Unit Psikiatri & Kesihatan Mental, Hospital Serian: 013-336 2896 (waktu pejabat).", text: false }
+        ] },
+        { t: "box", tone: "red", title: "Jika saya rasa tidak selamat", body: [
+          { t: "p", x: "Hubungi **999** atau pergi ke Unit Kecemasan yang terdekat. Anda juga boleh menghubungi talian bantuan di halaman [Bantuan Segera](#/urgent)." },
+          { t: "call999" }
+        ] }
+      ]
+    },
+
+    signs: {
+      title: "Tanda amaran awal saya", short: "Kesan kambuh awal, dan tahu apa perlu dibuat", icon: "🚦", parent: "manage",
+      lead: "Sebelum kambuh, selalunya ada perubahan kecil, beberapa hari atau minggu lebih awal. Mengenali tanda anda sendiri membantu anda bertindak awal. Buat pelan ini bersama pasukan rawatan dan keluarga.",
+      blocks: [
+        { t: "checklist", items: [
+          { q: "🟢 Apabila saya sihat, saya biasanya begini:", hint: "Contohnya: tidur, kerja, emosi, cara saya menghabiskan hari.", zone: "g" },
+          { q: "Tanda amaran awal saya (tanda yang berkaitan dengan saya):", ticks: [
+            "Kurang tidur, atau tidur jauh lebih banyak",
+            "Rasa tegang, cepat marah atau gelisah",
+            "Hilang minat terhadap sesuatu",
+            "Menjauhkan diri daripada orang lain",
+            "Rasa curiga atau takut",
+            "Mendengar atau melihat sesuatu yang orang lain tidak alami",
+            "Fikiran berlumba-lumba, atau tenaga luar biasa tinggi",
+            "Tertinggal ubat",
+            "Lebih banyak alkohol, tuak atau dadah",
+            "Tidak makan atau tidak mandi",
+            "Susah menumpukan perhatian"
+          ], text: true },
+          { q: "🟡 Jika saya perasan tanda ini, saya akan:", ticks: [
+            "Guna [pelan menghadapi masalah saya](#/plan)",
+            "Beritahu ahli keluarga atau kawan",
+            "Teruskan makan ubat seperti yang dipreskripsi",
+            "Kekalkan rutin tidur yang tetap",
+            "Elakkan alkohol dan dadah",
+            "Hubungi unit, atau minta temujanji lebih awal"
+          ], text: true, zone: "a" },
+          { q: "🔴 Jika keadaan bertambah teruk, atau saya rasa tidak selamat:", hint: "Hubungi **999** atau pergi ke Unit Kecemasan. Beritahu orang yang anda percayai.", zone: "r" },
+          { q: "Perkara yang pernah mencetuskan kambuh sebelum ini:" },
+          { q: "Orang yang akan membantu saya memerhati tanda-tanda ini:" }
+        ] },
+        { t: "box", tone: "teal", body: [
+          { t: "p", x: "**Kongsi pelan ini** dengan pasukan rawatan pada temujanji seterusnya, dan dengan orang yang anda percayai. Semak semula selepas kambuh atau perubahan besar." }
+        ] }
+      ]
+    },
+
+    /* ================= VIDEO ================= */
+    videos: {
+      title: "Tonton & dengar", short: "Video pendek daripada organisasi kesihatan yang dipercayai", icon: "▶️",
+      lead: "Video pendek daripada organisasi kesihatan yang dipercayai, seperti WHO dan NHS. Kebanyakannya dalam Bahasa Inggeris dengan sari kata. Tiada apa dimuatkan dari YouTube sehingga anda tekan Main, dan video menggunakan data mudah alih.",
+      blocks: [
+        { t: "h", x: "Dalam Bahasa Melayu" },
+        { t: "videos", items: ["kkm-pernafasan"] },
+        { t: "h", x: "Pernafasan" },
+        { t: "videos", items: ["breath-nhsinform", "breath-cwpt", "breath-box"] },
+        { t: "h", x: "Grounding (membumikan diri)" },
+        { t: "videos", items: ["ground-who", "ground-paho"] },
+        { t: "h", x: "Relaksasi otot" },
+        { t: "videos", items: ["pmr-therapistaid", "pmr-hss", "relax-cwpt"] },
+        { t: "h", x: "Kesedaran penuh & tekanan" },
+        { t: "videos", items: ["mind-nhs24", "stress-who", "room-who"] },
+        { t: "h", x: "Tidur" },
+        { t: "videos", items: ["sleep-emm"] },
+        { t: "h", x: "Memahami kemurungan" },
+        { t: "videos", items: ["dep-who"] },
+        { t: "p", x: "*Video ini dipilih oleh unit, tetapi dihasilkan oleh organisasi lain. Ia menyokong, bukan menggantikan, nasihat daripada pasukan rawatan anda sendiri.*" }
       ]
     },
 
@@ -530,6 +736,19 @@ window.MT_CONTENT.ms = {
           "Elakkan makan berat, alkohol dan merokok menjelang waktu tidur.",
           "Jika tidur siang, kurang daripada 30 minit dan sebelum pukul 3 petang."
         ] },
+        { t: "h", x: "Rutin sebelum tidur saya malam ini" },
+        { t: "checklist", items: [
+          { q: "Tanda apa yang anda akan cuba malam ini:", ticks: [
+            "Kopi, teh atau kola terakhir sebelum 2 petang",
+            "Tutup telefon dan TV 30–60 minit sebelum tidur",
+            "Mandi atau basuh badan dengan air suam",
+            "Malapkan lampu",
+            "10 minit [pernafasan perlahan](#/breathe-46) atau [imbasan badan](#/med-body-guide)",
+            "Tulis kerisauan esok di atas kertas, kemudian simpan",
+            "Set penggera bangun pada waktu yang sama seperti biasa"
+          ] }
+        ] },
+        { t: "video", v: "sleep-emm" },
         { t: "h", x: "Tak boleh tidur?" },
         { t: "p", x: "Jika sudah terjaga lebih kurang 20 minit, bangun. Buat sesuatu yang tenang dalam cahaya malap, seperti [relaksasi otot](#/calm/pmr), dan kembali ke katil apabila mengantuk." },
         { t: "box", tone: "amber", title: "Keselamatan pil tidur", body: [
@@ -704,13 +923,28 @@ window.MT_CONTENT.ms = {
         { t: "p", x: "Ia menyokong, tetapi tidak menggantikan, rawatan daripada doktor dan pasukan anda. Ia tidak boleh memberi nasihat perubatan peribadi." },
         { t: "h", x: "Privasi anda" },
         { t: "p", x: "Kami tidak mengumpul, menyimpan atau berkongsi sebarang maklumat tentang anda. Kami tidak menggunakan kuki. Tiada log masuk. Apa sahaja yang anda tanda atau tulis kekal dalam telefon anda." },
-        { t: "p", x: "Laman ini hanya mengingati pilihan bahasa dan saiz tulisan anda, dalam telefon anda sendiri." },
+        { t: "p", x: "Laman ini hanya mengingati pilihan bahasa, saiz tulisan, tema warna dan tetapan suara anda, dalam telefon anda sendiri." },
+        { t: "p", x: "**Video:** tiada apa dimuatkan dari YouTube sehingga anda tekan Main. Kemudian video dimainkan dari YouTube (Google) dalam mod privasi dipertingkat, dan dasar privasi YouTube sendiri terpakai. Halaman di laman web KKM dibuka dalam tab baharu." },
+        { t: "p", x: "Panduan suara menggunakan suara yang sedia ada dalam telefon atau pelayar anda. Laman ini sendiri tidak menghantar apa-apa, tetapi sesetengah telefon atau pelayar mungkin menggunakan perkhidmatan suara dalam talian mereka sendiri. Jika tidak pasti, matikan suara dan ikut teks di skrin." },
         { t: "h", x: "Disediakan oleh" },
         { t: "p", x: "Unit Psikiatri & Kesihatan Mental, Hospital Serian, Sarawak." },
         { t: "p", x: "Kandungan berdasarkan Garis Panduan Amalan Klinikal Kementerian Kesihatan Malaysia jika ada, serta panduan antarabangsa (WHO, NICE) dan kajian." },
+        { t: "h", x: "Sumber utama" },
+        { t: "ul", items: [
+          "KKM. [Clinical Practice Guidelines: Management of Major Depressive Disorder, edisi ke-2 (2019)](https://www.moh.gov.my/images/04-penerbitan/penerbitan-klinikal/panduan-amalan-klinikal/CPG_Management_of_MDD_Second_Edition_04092020.pdf)",
+          "NHS. [Breathing exercises for stress](https://www.nhs.uk/mental-health/self-help/guides-tools-and-activities/breathing-exercises-for-stress/)",
+          "NICE. CG113 (keresahan umum dan gangguan panik); NG222 (kemurungan); NG215 (gejala tarikan ubat).",
+          "WHO. *Doing What Matters in Times of Stress* (2020); *Preventing suicide: a resource for media professionals* (2023).",
+          "Fincham dan rakan-rakan (2023), meta-analisis latihan pernafasan, *Scientific Reports*; Balban dan rakan-rakan (2023), *Cell Reports Medicine*.",
+          "KKM. Clinical Practice Guidelines: Management of Schizophrenia in Adults (2009). NICE CG178 (psikosis dan skizofrenia dewasa).",
+          "Video: WHO, WHO Asia Tenggara, PAHO, NHS inform, NHS 24, Every Mind Matters (NHS England), trust NHS, Sunnybrook Hospital, Hospital for Special Surgery, Therapist Aid, dan KKM (Info Sihat). Setiap video disenaraikan bersama penerbitnya.",
+          "Nombor talian bantuan: laman rasmi setiap perkhidmatan (Talian HEAL, Befrienders Kuching & KL, Talian Kasih, MIASA, Persatuan Kesihatan Mental Sarawak)."
+        ] },
+        { t: "p", x: "Malaysia belum mempunyai Garis Panduan Amalan Klinikal KKM untuk keresahan atau gangguan panik; halaman tersebut berdasarkan NICE, WHO dan kajian." },
         { t: "h", x: "Semakan" },
-        { t: "p", x: "Status: **draf**, menunggu kelulusan klinikal Ketua Jabatan." },
-        { t: "p", x: "Kandungan disemak: 18/09/2026. Nombor talian bantuan disemak: 18/09/2026." },
+        { t: "p", x: "Versi 0.7 · Status: **draf**, menunggu kelulusan klinikal." },
+        { t: "p", x: "Penyemak klinikal: Pakar Psikiatri (Ketua Jabatan) · belum diluluskan." },
+        { t: "p", x: "Kandungan disemak: 22/09/2026. Nombor talian bantuan disemak: 21/09/2026. Video disemak: 22/09/2026. Semakan seterusnya: 21/12/2026." },
         { t: "h", x: "Kecemasan" },
         { t: "p", x: "Laman web ini tidak dapat menerima mesej atau memberi bantuan kecemasan. Semasa kecemasan, hubungi **999** atau lihat [Bantuan Segera](#/urgent)." }
       ]

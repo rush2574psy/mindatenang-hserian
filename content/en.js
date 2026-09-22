@@ -10,6 +10,31 @@ window.MT_CONTENT.en = {
     draftSite: "Draft for Head of Department review. Content not yet clinically approved.",
     draftBM: "",
     hello: "Welcome. You are not alone.",
+    tagline: "Learn at the clinic. Practise at home.",
+    needTitle: "What do you need right now?",
+    need: [
+      ["🌀", "I feel anxious", "#/breathe-46"],
+      ["🌊", "I feel overwhelmed", "#/pause-guide"],
+      ["🍃", "Calm my mind", "#/med-breath-guide"],
+      ["💪", "I feel tense", "#/pmr-guide"],
+      ["🌙", "I can't sleep", "#/sleep"],
+      ["🆘", "I need help now", "#/urgent", true]
+    ],
+    rxNote: "Your care team suggested this for you. Practise it at home, and tell them how it went at your next visit.",
+    vPlay: "▶ Play video",
+    vNote: "Plays from YouTube (uses mobile data). Nothing loads until you tap Play.",
+    vYT: "Open in YouTube",
+    vOpen: "Open video page",
+    vLang: { en: "English, captions", ms: "Bahasa Melayu" },
+    reflect: {
+      q: "How do you feel now?",
+      better: ["Better", "Good. Remember what helped. Practise it again tomorrow, and tell your team about it at your next visit. You can add it to [my coping plan](#/plan)."],
+      same: ["About the same", "That's okay. Exercises get easier with practice, and not every one suits everyone. Try another: [5-4-3-2-1 grounding](#/ground), [muscle relaxation](#/pmr-guide), or [How am I feeling?](#/toolbox)"],
+      worse: ["Worse", "Stop the exercise and breathe normally. Sit somewhere safe. If you feel unsafe or very unwell, go to [Urgent Help](#/urgent) now. Otherwise, tell your team at your next visit, or call the unit during office hours."],
+      priv: "Your answer is not saved or sent anywhere."
+    },
+    themeLabel: "Colour theme",
+    themes: { auto: "same as phone", light: "light", dark: "dark" },
     helloP: "Simple information and calming exercises for you and your family, to use between clinic visits.",
     calmSub: "Breathing, calming & meditation, 1–5 minutes",
     sections: "Sections",
@@ -18,7 +43,8 @@ window.MT_CONTENT.en = {
     reviewed: "Last reviewed:", version: "Version",
     fbAsk: "Have an idea to improve this site?",
     fbLink: "Share a suggestion (anonymous)",
-    fbNote: "Opens in Google Forms. Please do not include personal details. Not for emergencies.",
+    fbNote: "For general suggestions only. Do not include names, phone numbers, health details or emergencies. This form opens in Google Forms.",
+    ext: "(external site, opens in a new tab)",
     sos: "URGENT HELP", sosSub: "Emergencies & helplines",
     back: "‹ Back",
     when: "When to use:", notice: "You may notice:", care: "Take care:",
@@ -37,14 +63,23 @@ window.MT_CONTENT.en = {
       bfkl:  ["Befrienders Kuala Lumpur", "24 hours"],
       kasih: ["Talian Kasih", "24 hours · WhatsApp 019-261 5999"],
       miasa: ["MIASA crisis line", "WhatsApp 03-9765 6088"],
-      mhak:  ["Mental Health Association Kuching", "Call for hours"]
+      mhak:  ["Mental Health Association of Sarawak (Kuching)", "Call for hours"]
     },
     pattern: "Breathing pattern",
-    inhale: "Breathe in…", exhale: "Breathe out…", hold: "Hold…", ready: "Press Start when ready",
-    start: "Start", stop: "Stop", rounds: "Rounds", next: "Next", again: "Again",
+    inhale: "Breathe in…", exhale: "Breathe out…", hold: "Hold…", ready: "Sit comfortably. Press Start when ready.",
+    start: "Start", stop: "Stop", rounds: "Rounds completed",
+    startOne: "Start 1 round", startLoop: "Keep going", again1: "Repeat 1 round",
+    switch46: "Switch to 4–6", quit: "Stop & breathe normally",
+    quitMsg: "You have stopped. Breathe normally, slowly.",
+    oneDone: "One round done. Well done. Repeat if you like.",
+    guideOpts: "Guide options: voice & background sound", next: "Next", again: "Again",
     breath: {
-      b46: { name: "Slow Breathing 4-6", care: "Breathe gently. Don't force big breaths. Stop if you feel dizzy." },
-      box: { name: "Box Breathing", care: "If you have a heart or lung condition, high blood pressure, are pregnant, or feel light-headed, leave out the holds and use 4-6 instead." }
+      b46: { name: "Slow Breathing 4-6", tag: "in 4, out 6",
+        cycle: "One round takes **10 seconds**: breathe in for 4, out for 6.",
+        care: "Breathe gently. Don't force big breaths. If you feel dizzy or uncomfortable, stop and breathe normally." },
+      box: { name: "Box Breathing", tag: "includes breath-holds",
+        cycle: "One round takes **16 seconds**: in 4, hold 4, out 4, hold 4.",
+        care: "Don't force or hold your breath if it feels uncomfortable. If you feel dizzy, short of breath or unsure, stop and go back to breathing normally. You can choose 4–6, which has no breath-holds." }
     },
     ground: {
       name: "5-4-3-2-1 Grounding",
@@ -217,7 +252,7 @@ window.MT_CONTENT.en = {
           { t: "p", x: "**Attempting suicide is no longer a crime in Malaysia.** Getting help, for yourself or someone else, will not get anyone into trouble with the police." }
         ] },
         { t: "h", x: "Need to talk to someone now?" },
-        { t: "p", x: "Calls are confidential. You don't have to explain everything; just say you need to talk." },
+        { t: "p", x: "You don't have to explain everything; just say you need to talk. Each service has its own privacy policy. If there is immediate danger, call **999**." },
         { t: "helplines" },
         { t: "box", tone: "blue", title: "Not an emergency?", body: [
           { t: "p", x: "For example: mild side effects, running low on medicine, symptoms slowly getting worse, or questions about your appointment." },
@@ -252,18 +287,18 @@ window.MT_CONTENT.en = {
           ],
           notice: "Your heart slows and you feel calmer or sleepy.",
           care: "Breathe gently and don't force big breaths. Stop if you feel dizzy.",
-          tool: "breathe-46" },
+          tool: "breathe-46", video: "breath-nhsinform" },
         { t: "ex", id: "box", name: "Box Breathing", time: "2–4 min",
           when: "You want a steady rhythm to follow.",
           steps: ["Breathe in for 4.", "Hold for 4.", "Breathe out for 4.", "Hold for 4, then repeat."],
-          care: "If you have a heart or lung condition, high blood pressure, are pregnant, or feel light-headed, leave out the holds and just breathe in and out.",
-          tool: "breathe-box" },
+          care: "Don't force or hold your breath if it feels uncomfortable. If you feel dizzy, short of breath or unsure, stop and go back to breathing normally. You can choose 4–6, which has no breath-holds.",
+          tool: "breathe-box", video: "breath-box" },
         { t: "ex", id: "g54321", name: "5-4-3-2-1 Grounding", time: "2–3 min",
           when: "Panic, racing thoughts, or feeling far away or unreal.",
           body: [{ t: "p", x: "Name 5 things you **see**, 4 you can **touch**, 3 you **hear**, 2 you **smell**, and 1 you **taste**." }],
           notice: "You feel more \"here and now\".",
           care: "There is no wrong way. Go at your own pace.",
-          tool: "ground", toolLabel: "Do it step by step" },
+          tool: "ground", toolLabel: "Do it step by step", video: "ground-who" },
         { t: "ex", id: "cool", name: "Cool Water & Touch", time: "1–3 min",
           when: "Strong feelings, or feeling disconnected.",
           steps: [
@@ -287,7 +322,7 @@ window.MT_CONTENT.en = {
             "Move to the next area."
           ],
           care: "Tense gently, never to the point of pain. Skip any sore or injured part.",
-          tool: "pmr-guide", toolLabel: "Start with voice guide" },
+          tool: "pmr-guide", toolLabel: "Start with voice guide", video: "pmr-therapistaid" },
         { t: "ex", id: "pause", name: "1-Minute Pause", time: "1 min",
           when: "A busy or stressful moment.",
           steps: ["Stop.", "Feel your feet on the floor.", "Notice one sound, one smell and one thing you see.", "Take one slow breath out."],
@@ -303,7 +338,7 @@ window.MT_CONTENT.en = {
           when: "A busy mind; you want to feel calmer and more focused.",
           steps: ["Rest your attention on your breath.", "When your mind wanders, gently bring it back."],
           care: "If upsetting memories come up, open your eyes and use 5-4-3-2-1.",
-          tool: "med-breath-guide", toolLabel: "Start guided meditation" },
+          tool: "med-breath-guide", toolLabel: "Start guided meditation", video: "mind-nhs24" },
         { t: "ex", id: "med-body", name: "Body Scan", time: "5 min",
           when: "Tense or tired body, or before sleep.",
           steps: ["Move your attention slowly from your feet to your head.", "Notice, and let each part soften."],
@@ -320,6 +355,7 @@ window.MT_CONTENT.en = {
           care: "You can use words or prayers from your own faith.",
           tool: "med-kind-guide", toolLabel: "Start guided meditation" },
         { t: "p", x: "For many people, prayer or quiet reflection also brings calm. Use what helps you." },
+        { t: "go", to: "#/videos", x: "▶ More videos to watch", tone: "ghost" },
         { t: "card", title: "Still not better?", body: [
           { t: "p", x: "These exercises help, but they are not treatment. If this happens often, tell your team at your next appointment. If you feel unsafe, go to [Urgent Help](#/urgent)." }
         ] }
@@ -369,7 +405,7 @@ window.MT_CONTENT.en = {
       title: "Understand my mental health", icon: "🧠",
       lead: "Mental health problems are common and treatable. Asking for help is a sign of strength.",
       blocks: [
-        { t: "links", items: ["anxiety", "panic", "stress", "depression", "sleep"] }
+        { t: "links", items: ["anxiety", "panic", "stress", "depression", "psychosis", "sleep"] }
       ]
     },
 
@@ -471,6 +507,7 @@ window.MT_CONTENT.en = {
         ] },
         { t: "h", x: "Avoid" },
         { t: "p", x: "Alcohol or tuak, gambling, and sleeping pills not prescribed for you." },
+        { t: "video", v: "stress-who" },
         { t: "box", tone: "blue", title: "When should I get help?", body: [
           { t: "ul", items: [
             "Stress has affected your sleep, work or relationships for more than 2 weeks",
@@ -504,6 +541,7 @@ window.MT_CONTENT.en = {
           "Don't stop because you feel no change yet. Talk to your doctor first.",
           "After you feel better, treatment usually continues for **at least 6 months**, and longer if you have had depression before. Your doctor will guide you."
         ] },
+        { t: "video", v: "dep-who" },
         { t: "box", tone: "blue", title: "When should I get help?", body: [
           { t: "ul", items: [
             "Symptoms last more than 2 weeks, or are getting worse",
@@ -512,6 +550,172 @@ window.MT_CONTENT.en = {
           ] },
           { t: "p", x: "Thoughts of harming yourself or ending your life → [Urgent Help](#/urgent) now." }
         ] }
+      ]
+    },
+
+    psychosis: {
+      title: "Psychosis", short: "When the mind loses touch with what is real", icon: "🌫️", parent: "learn", edu: true,
+      blocks: [
+        { t: "h", x: "What is it?" },
+        { t: "p", x: "Psychosis means the mind loses some contact with what is real. A person may:" },
+        { t: "ul", items: [
+          "hear, see or feel things that other people don't (for example, hearing voices)",
+          "strongly believe things that others don't share, such as being watched, followed or harmed",
+          "have muddled thinking or speech that is hard to follow"
+        ] },
+        { t: "p", x: "To the person, these experiences feel completely real. That is why arguing rarely helps." },
+        { t: "h", x: "What can cause it?" },
+        { t: "p", x: "Psychosis is a sign, not a diagnosis. It can happen with conditions such as schizophrenia, bipolar disorder or severe depression, and also with drugs (for example syabu/methamphetamine or cannabis), stopping alcohol suddenly, some physical illnesses, very poor sleep, or after childbirth. Your doctor will look for the cause." },
+        { t: "box", tone: "teal", body: [
+          { t: "p", x: "**Psychosis is treatable.** Many people recover well, especially when treatment starts early and continues." }
+        ] },
+        { t: "h", x: "Early signs to watch for" },
+        { t: "ul", items: [
+          "Sleeping much less, or much more",
+          "Pulling away from family and friends",
+          "Becoming suspicious or fearful",
+          "Odd ideas, or talking in a way that is hard to follow",
+          "Stopping work, study or self-care",
+          "Stopping medicine"
+        ] },
+        { t: "p", x: "Each person has their own pattern. Write yours down in [my early warning signs plan](#/signs)." },
+        { t: "h", x: "What helps alongside treatment?" },
+        { t: "ul", items: [
+          "Keep taking your medicine, even when you feel well. Talk to your doctor before any change.",
+          "Keep regular sleep and meal times.",
+          "Avoid alcohol, tuak and drugs. They can bring psychosis back.",
+          "Lower stress where you can, and keep a simple daily routine.",
+          "Stay close to people who support you.",
+          "Come to every appointment, and bring a family member if that helps."
+        ] },
+        { t: "h", x: "For family" },
+        { t: "p", x: "You don't need to agree or argue with unusual beliefs. Respond to the feeling: *\"That sounds frightening. I'm here with you.\"* See [Family & caregivers](#/family) for more." },
+        { t: "box", tone: "blue", title: "When should I get help?", body: [
+          { t: "ul", items: [
+            "Early warning signs are coming back",
+            "Medicine has been stopped or missed",
+            "Voices or beliefs are getting stronger or more upsetting"
+          ] },
+          { t: "dept" },
+          { t: "p", x: "If voices tell the person to harm themselves or others, or they may act on frightening beliefs → [Urgent Help](#/urgent) now." }
+        ] }
+      ]
+    },
+
+    /* ================= MANAGE (self-management) ================= */
+    manage: {
+      title: "Look after myself", short: "My coping plan, warning signs & daily routine", icon: "🌱",
+      lead: "Simple plans you make yourself, with your team and family. Fill them in, then print or save them as PDF. Nothing is stored on this site.",
+      blocks: [
+        { t: "links", items: ["plan", "signs", "appointment"] },
+        { t: "h", x: "Daily routine" },
+        { t: "ul", items: [
+          "Get up and go to bed at about the same time each day.",
+          "Eat regular meals, and move your body every day, even a 10-minute walk.",
+          "Do one thing you enjoy and one useful task each day.",
+          "Practise one calming exercise daily, when you are calm, not only in a crisis: [Calm Down Now](#/calm)."
+        ] },
+        { t: "h", x: "Medicine and appointments" },
+        { t: "ul", items: [
+          "Set a daily alarm on your phone for your medicine. A weekly pill box helps too.",
+          "Put your next appointment or injection date in your phone calendar, and set a reminder the day before.",
+          "Running low on medicine? Contact the unit before it runs out.",
+          "Don't stop or change your medicine without talking to your doctor."
+        ] },
+        { t: "dept" }
+      ]
+    },
+
+    plan: {
+      title: "My coping plan", short: "What helps me when things get hard", icon: "📝", parent: "manage",
+      lead: "Fill this in when you feel calm, ideally with your team or someone you trust. Keep a printed copy somewhere easy to find.",
+      blocks: [
+        { t: "checklist", items: [
+          { q: "When I start to struggle, I notice:", hint: "Thoughts, feelings, body signs, or things I do." },
+          { q: "Things that help me calm down:", ticks: [
+            "[Slow breathing](#/breathe-46)",
+            "[5-4-3-2-1 grounding](#/ground)",
+            "[Muscle relaxation](#/pmr-guide)",
+            "Prayer or quiet reflection",
+            "A walk or gardening",
+            "Talking to someone",
+            "Music",
+            "Cool water on my hands"
+          ], text: true },
+          { q: "People I can talk to (name and phone number):" },
+          { q: "Places where I feel calm and safe:" },
+          { q: "Things to avoid when I'm struggling:", ticks: [
+            "Alcohol or tuak",
+            "Staying up late",
+            "Being alone all day",
+            "Missing my medicine",
+            "Scrolling upsetting news or social media"
+          ], text: true },
+          { q: "My reasons to keep going (people, faith, hopes):" },
+          { q: "My team's number:", hint: "Psychiatry & Mental Health Unit, Hospital Serian: 013-336 2896 (office hours)." , text: false }
+        ] },
+        { t: "box", tone: "red", title: "If I feel unsafe", body: [
+          { t: "p", x: "Call **999** or go to the nearest Emergency Department. You can also call a helpline on the [Urgent Help](#/urgent) page." },
+          { t: "call999" }
+        ] }
+      ]
+    },
+
+    signs: {
+      title: "My early warning signs", short: "Spot a relapse early, and know what to do", icon: "🚦", parent: "manage",
+      lead: "Before a relapse there are often small changes, days or weeks earlier. Knowing your own signs helps you act early. Make this plan with your team and family.",
+      blocks: [
+        { t: "checklist", items: [
+          { q: "🟢 When I am well, I am usually like this:", hint: "For example: sleep, work, mood, how I spend my day.", zone: "g" },
+          { q: "My early warning signs (tick the ones that fit me):", ticks: [
+            "Sleeping less, or much more",
+            "Feeling tense, irritable or on edge",
+            "Losing interest in things",
+            "Pulling away from people",
+            "Feeling suspicious or fearful",
+            "Hearing or seeing things others don't",
+            "Racing thoughts, or unusually high energy",
+            "Missing medicine",
+            "More alcohol, tuak or drugs",
+            "Not eating or washing",
+            "Trouble concentrating"
+          ], text: true },
+          { q: "🟡 If I notice these signs, I will:", ticks: [
+            "Use [my coping plan](#/plan)",
+            "Tell a family member or friend",
+            "Keep taking my medicine as prescribed",
+            "Keep a regular sleep routine",
+            "Avoid alcohol and drugs",
+            "Call the unit, or ask for an earlier appointment"
+          ], text: true, zone: "a" },
+          { q: "🔴 If things get much worse, or I feel unsafe:", hint: "Call **999** or go to the Emergency Department. Tell someone you trust.", zone: "r" },
+          { q: "Things that have triggered a relapse before:" },
+          { q: "The person who will help me watch for these signs:" }
+        ] },
+        { t: "box", tone: "teal", body: [
+          { t: "p", x: "**Share this plan** with your team at your next visit, and with someone you trust. Look at it again after any relapse or big change." }
+        ] }
+      ]
+    },
+
+    /* ================= VIDEOS ================= */
+    videos: {
+      title: "Watch & listen", short: "Short videos from trusted health organisations", icon: "▶️",
+      lead: "Short videos from trusted health organisations, such as WHO and the NHS. Most are in English with captions. Nothing loads from YouTube until you tap Play, and videos use mobile data.",
+      blocks: [
+        { t: "h", x: "Breathing" },
+        { t: "videos", items: ["breath-nhsinform", "breath-cwpt", "breath-box"] },
+        { t: "h", x: "Grounding" },
+        { t: "videos", items: ["ground-who", "ground-paho"] },
+        { t: "h", x: "Muscle relaxation" },
+        { t: "videos", items: ["pmr-therapistaid", "pmr-hss", "relax-cwpt", "kkm-pernafasan"] },
+        { t: "h", x: "Mindfulness & stress" },
+        { t: "videos", items: ["mind-nhs24", "stress-who", "room-who"] },
+        { t: "h", x: "Sleep" },
+        { t: "videos", items: ["sleep-emm"] },
+        { t: "h", x: "Understanding depression" },
+        { t: "videos", items: ["dep-who"] },
+        { t: "p", x: "*These videos are chosen by the unit, but they are made by other organisations. They support, but do not replace, advice from your own team.*" }
       ]
     },
 
@@ -530,6 +734,19 @@ window.MT_CONTENT.en = {
           "Avoid heavy meals, alcohol and smoking close to bedtime.",
           "If you nap, keep it under 30 minutes and before 3 pm."
         ] },
+        { t: "h", x: "My wind-down routine for tonight" },
+        { t: "checklist", items: [
+          { q: "Tick what you will try tonight:", ticks: [
+            "Last coffee, tea or cola before 2 pm",
+            "Phone and TV off 30–60 minutes before bed",
+            "A warm wash or shower",
+            "Dim the lights",
+            "10 minutes of [slow breathing](#/breathe-46) or [body scan](#/med-body-guide)",
+            "Write tomorrow's worries on paper, then put it away",
+            "Wake-up alarm set for the same time as usual"
+          ] }
+        ] },
+        { t: "video", v: "sleep-emm" },
         { t: "h", x: "Can't sleep?" },
         { t: "p", x: "If you have been awake for about 20 minutes, get up. Do something calm in dim light, such as [muscle relaxation](#/calm/pmr), and go back to bed when sleepy." },
         { t: "box", tone: "amber", title: "Sleeping-pill safety", body: [
@@ -704,13 +921,28 @@ window.MT_CONTENT.en = {
         { t: "p", x: "It supports, but does not replace, the care from your doctor and team. It cannot give you personal medical advice." },
         { t: "h", x: "Your privacy" },
         { t: "p", x: "We do not collect, store or share any information about you. We use no cookies. There is no login. Anything you tick or type stays on your phone." },
-        { t: "p", x: "The site only remembers your language and text-size choice, on your own phone." },
+        { t: "p", x: "The site only remembers your language, text-size, colour-theme and voice settings, on your own phone." },
+        { t: "p", x: "**Videos:** nothing loads from YouTube until you tap Play. Then the video plays from YouTube (Google) in its privacy-enhanced mode, and YouTube's own privacy policy applies. The page on the Ministry of Health website opens in a new tab." },
+        { t: "p", x: "The voice guide uses the voice built into your phone or browser. The site itself sends nothing, but some phones or browsers may use their own online speech service. If unsure, turn the voice off and follow the text on screen." },
         { t: "h", x: "Who prepared it" },
         { t: "p", x: "Psychiatry & Mental Health Unit, Hospital Serian, Sarawak." },
         { t: "p", x: "The content is based on Malaysian Ministry of Health clinical practice guidelines where they exist, and on international guidance (WHO, NICE) and research." },
+        { t: "h", x: "Main sources" },
+        { t: "ul", items: [
+          "MOH Malaysia. [Clinical Practice Guidelines: Management of Major Depressive Disorder, 2nd ed. (2019)](https://www.moh.gov.my/images/04-penerbitan/penerbitan-klinikal/panduan-amalan-klinikal/CPG_Management_of_MDD_Second_Edition_04092020.pdf)",
+          "NHS. [Breathing exercises for stress](https://www.nhs.uk/mental-health/self-help/guides-tools-and-activities/breathing-exercises-for-stress/)",
+          "NICE. CG113 (generalised anxiety and panic); NG222 (depression); NG215 (medicine withdrawal).",
+          "WHO. *Doing What Matters in Times of Stress* (2020); *Preventing suicide: a resource for media professionals* (2023).",
+          "Fincham et al. (2023), breathwork meta-analysis, *Scientific Reports*; Balban et al. (2023), *Cell Reports Medicine*.",
+          "MOH Malaysia. Clinical Practice Guidelines: Management of Schizophrenia in Adults (2009). NICE CG178 (psychosis and schizophrenia in adults).",
+          "Videos: WHO, WHO South-East Asia, PAHO, NHS inform, NHS 24, Every Mind Matters (NHS England), NHS trusts, Sunnybrook Hospital, Hospital for Special Surgery, Therapist Aid, and MOH Malaysia (Info Sihat). Each is listed with its publisher.",
+          "Helpline numbers: each service's official website (Talian HEAL, Befrienders Kuching & KL, Talian Kasih, MIASA, Mental Health Association of Sarawak)."
+        ] },
+        { t: "p", x: "Malaysia has no MOH clinical practice guideline for anxiety or panic disorder; those pages rest on NICE, WHO and research evidence." },
         { t: "h", x: "Review" },
-        { t: "p", x: "Status: **draft**, awaiting clinical approval by the Head of Department." },
-        { t: "p", x: "Content last reviewed: 18/09/2026. Helpline numbers last checked: 18/09/2026." },
+        { t: "p", x: "Version 0.7 · Status: **draft**, awaiting clinical approval." },
+        { t: "p", x: "Clinical reviewer: Consultant Psychiatrist (Head of Department) · not yet approved." },
+        { t: "p", x: "Content last reviewed: 22/09/2026. Helpline numbers last checked: 21/09/2026. Videos checked: 22/09/2026. Next review: 21/12/2026." },
         { t: "h", x: "Emergency" },
         { t: "p", x: "This website cannot receive messages or respond to emergencies. In an emergency, call **999** or see [Urgent Help](#/urgent)." }
       ]
