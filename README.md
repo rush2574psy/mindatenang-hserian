@@ -27,7 +27,7 @@ audio/              Ruang untuk rakaman suara latihan menenangkan diri
 
 ## Status
 
-Versi draf (v0.7, 22/09/2026: rupa baharu (Deep Teal), English sebagai bahasa lalai, bahagian Jaga Diri Saya (pelan menghadapi masalah, tanda amaran awal), halaman psikosis, senarai semak rutin tidur, soalan "Bagaimana perasaan anda sekarang?" selepas latihan, butang pantas di Laman Utama, togol mod gelap, 13 video YouTube + 1 video KKM). Tag `noindex,nofollow` masih aktif dalam `index.html` —
+Versi draf (v0.7, 22/09/2026: rupa baharu (Deep Teal), English sebagai bahasa lalai, bahagian Jaga Diri Saya (pelan menghadapi masalah, tanda amaran awal), halaman psikosis, senarai semak rutin tidur, soalan "Bagaimana perasaan anda sekarang?" selepas latihan, butang pantas di Laman Utama, togol mod gelap, 12 video YouTube HD (1 dalam BM)). Tag `noindex,nofollow` masih aktif dalam `index.html` —
 laman boleh dibuka oleh sesiapa yang ada pautan atau kod QR, tetapi tidak
 muncul dalam hasil carian Google. Tag itu dibuang selepas kelulusan Ketua
 Jabatan.
