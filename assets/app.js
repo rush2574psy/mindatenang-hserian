@@ -1,12 +1,13 @@
 /* Minda Tenang — app logic.
    Hash routes (#/urgent, #/calm …) so every page has its own link and the phone's Back button works.
-   All wording lives in content/ms.js and content/en.js. Nothing is sent anywhere. */
+   All wording lives in content/ms.js and content/en.js. The site itself makes no network requests
+   (the phone's own text-to-speech service may behave differently; see About page). */
 (function () {
   "use strict";
 
   var SITE = {
-    version: "0.5",
-    reviewed: "21/09/2026",
+    version: "0.7",
+    reviewed: "22/09/2026",
     draft: true            // set to false after HOD sign-off: hides the draft banner
   };
 
@@ -28,20 +29,30 @@
   var TONE = {
     calm: "teal", toolbox: "amber", learn: "blue", sleep: "purple", medicine: "emerald",
     appointment: "indigo", family: "sky", urgent: "rose", about: "teal",
-    anxiety: "blue", panic: "orange", stress: "amber", depression: "violet"
+    anxiety: "blue", panic: "orange", stress: "amber", depression: "violet", psychosis: "sky",
+    manage: "emerald", plan: "teal", signs: "amber", videos: "indigo"
   };
   function tone(id) { return TONE[id] || "teal"; }
   function icTile(icon, id) {
     return '<span class="ic-tile t-' + tone(id) + '" aria-hidden="true">' + (icon || "") + "</span>";
   }
 
+  document.documentElement.className += " js";   // CSS hides JS-only controls when scripts are off
   var C = window.MT_CONTENT;
   var store = {
     get: function (k) { try { return localStorage.getItem(k); } catch (e) { return null; } },
     set: function (k, v) { try { localStorage.setItem(k, v); } catch (e) {} }
   };
-  var lang = store.get("mt-lang") === "en" ? "en" : "ms";
+  var lang = store.get("mt-lang") === "ms" ? "ms" : "en";   // English is the default (v0.7); BM is one tap away
   var big = store.get("mt-big") === "1";
+  // Colour theme: "auto" follows the phone's setting; the header button cycles auto → light → dark.
+  var THEMES = ["auto", "light", "dark"];
+  var theme = THEMES.indexOf(store.get("mt-theme")) > 0 ? store.get("mt-theme") : "auto";
+  function applyTheme() {
+    if (theme === "auto") document.documentElement.removeAttribute("data-theme");
+    else document.documentElement.setAttribute("data-theme", theme);
+  }
+  applyTheme();
   var app = document.getElementById("app");
   var reduce = window.matchMedia && matchMedia("(prefers-reduced-motion: reduce)").matches;
   var timer = null;
@@ -51,9 +62,13 @@
       return { "&": "&amp;", "<": "&lt;", ">": "&gt;", '"': "&quot;" }[c];
     });
   }
-  // Tiny inline formatter: **bold**, *italic*, [label](#/route) or [label](tel:…)
+  // Tiny inline formatter: **bold**, *italic*, [label](#/route), [label](tel:…) or [label](https://…)
+  function extTag() { return '<span class="sr-only"> ' + esc(U().ext) + '</span> <span aria-hidden="true">\u2197</span>'; }
   function fmt(s) {
     return esc(s)
+      .replace(/\[(.+?)\]\((https:\/\/[^)\s]+)\)/g, function (m, t, u) {
+        return '<a href="' + u + '" target="_blank" rel="noopener noreferrer">' + t + extTag() + "</a>";
+      })
       .replace(/\*\*(.+?)\*\*/g, "<b>$1</b>")
       .replace(/\*(.+?)\*/g, "<i>$1</i>")
       .replace(/\[(.+?)\]\(((?:#\/|tel:)[^)\s]*)\)/g, '<a href="$2">$1</a>');
@@ -279,6 +294,8 @@
         return '<a class="line" href="tel:' + DEPT.tel + '"><div><b>' + esc(u.deptName) + "</b><small>" + esc(u.deptHours) +
           '</small></div><span class="num">' + DEPT.show + "</span></a>";
       case "checklist": return checklist(b.items);
+      case "video": return video(b.v);
+      case "videos": return '<div class="vids">' + b.items.map(video).join("") + "</div>";
       default: return "";
     }
   }
@@ -293,7 +310,7 @@
       (e.body ? blocks(e.body) : "") +
       (e.notice ? '<p><span class="lbl">' + esc(u.notice) + "</span> " + fmt(e.notice) + "</p>" : "") +
       (e.care ? '<p class="caution"><span class="lbl">' + esc(u.care) + "</span> " + fmt(e.care) + "</p>" : "") +
-      tool + "</article>";
+      tool + (e.video ? video(e.video) : "") + "</article>";
   }
 
   var SIT_TONES = ["blue", "orange", "violet", "sky", "rose", "purple", "amber", "emerald"];
@@ -322,21 +339,81 @@
     var u = U();
     return '<form class="card check" onsubmit="return false">' + items.map(function (q, i) {
       var id = "q" + i, inner = "";
+      if (q.ticks) {
+        inner = '<div class="ticks" role="group" aria-labelledby="' + id + '">' + q.ticks.map(function (o) {
+          return '<label><input type="checkbox"> <span>' + fmt(o) + "</span></label>";
+        }).join("") + "</div>";
+      }
       if (q.opts) {
         inner = '<div class="opts" role="group" aria-labelledby="' + id + '">' + q.opts.map(function (o) {
           return '<label><input type="radio" name="' + id + '"> ' + esc(o) + "</label>";
         }).join("") + "</div>";
       }
-      if (q.text !== false && !q.opts || q.text) {
+      if (q.text !== false && !q.opts && !q.ticks || q.text) {
         inner += '<textarea aria-labelledby="' + id + '" rows="2"></textarea>';
       }
-      return '<div class="q"><span id="' + id + '">' + fmt(q.q) + "</span>" +
+      return '<div class="q' + (q.zone ? " zone-" + q.zone : "") + '"><span class="qh" id="' + id + '">' + fmt(q.q) + "</span>" +
         (q.hint ? '<p class="hint">' + fmt(q.hint) + "</p>" : "") + inner + "</div>";
     }).join("") +
       '<p class="fine">' + esc(u.checkPrivacy) + "</p>" +
       '<div class="noprint btnrow">' +
       '<button class="go" type="button" id="doprint">' + esc(u.print) + "</button>" +
       '<button class="go ghost" type="button" id="doclear">' + esc(u.clear) + "</button></div></form>";
+  }
+
+  /* ---------- videos ----------
+     Listed in content/videos.js. Nothing is loaded from YouTube until the person taps "Play":
+     then the privacy-enhanced player (youtube-nocookie.com) opens, with captions on. */
+  function video(key) {
+    var u = U(), v = (window.MT_VIDEOS || {})[key];
+    if (!v) return "";
+    var title = v.title[lang] || v.title.en;
+    var meta = esc(v.by) + (v.lang ? " · " + esc(u.vLang[v.lang] || v.lang) : "") + (v.mins ? " · " + esc(v.mins) : "");
+    if (v.url) {   // external page (not YouTube)
+      return '<div class="vid"><div class="vh"><span class="play" aria-hidden="true">\u25B6</span><div><b>' + esc(title) +
+        "</b><small>" + meta + "</small></div></div>" +
+        '<a class="go ghost sm" href="' + esc(v.url) + '" target="_blank" rel="noopener noreferrer">' + esc(u.vOpen) + extTag() + "</a>" +
+        (v.note && v.note[lang] ? '<p class="vnote">' + esc(v.note[lang]) + "</p>" : "") + "</div>";
+    }
+    return '<div class="vid" data-yt="' + esc(v.yt) + '" data-title="' + esc(title) + '"><div class="vh"><span class="play" aria-hidden="true">\u25B6</span><div><b>' +
+      esc(title) + "</b><small>" + meta + "</small></div></div>" +
+      '<button class="go ghost sm vplay" type="button">' + esc(u.vPlay) + "</button>" +
+      '<p class="vnote">' + esc(u.vNote) + ' <a href="https://www.youtube.com/watch?v=' + esc(v.yt) + '" target="_blank" rel="noopener noreferrer">' + esc(u.vYT) + extTag() + "</a></p></div>";
+  }
+  function playVideo(box) {
+    var id = box.getAttribute("data-yt");
+    var f = document.createElement("div"); f.className = "frame";
+    var ifr = document.createElement("iframe");
+    ifr.src = "https://www.youtube-nocookie.com/embed/" + encodeURIComponent(id) + "?rel=0&autoplay=1&cc_load_policy=1&hl=" + lang;
+    ifr.title = box.getAttribute("data-title");
+    ifr.setAttribute("allow", "autoplay; encrypted-media; picture-in-picture; fullscreen");
+    ifr.setAttribute("referrerpolicy", "strict-origin-when-cross-origin");   // YouTube needs the site address to play embeds
+    f.appendChild(ifr);
+    var btn = box.querySelector(".vplay"); if (btn) btn.replaceWith(f);
+  }
+
+  /* ---------- "How do you feel now?" after an exercise ----------
+     Just a gentle next step. The answer is not saved or sent anywhere. */
+  function reflectHTML() {
+    var r = U().reflect;
+    return '<section class="reflect" id="reflect" aria-live="polite"><h2>' + esc(r.q) + '</h2><div class="opts" role="group" aria-label="' + esc(r.q) + '">' +
+      ["better", "same", "worse"].map(function (k) {
+        return '<button type="button" aria-pressed="false" data-r="' + k + '">' + esc(r[k][0]) + "</button>";
+      }).join("") + '</div><div class="ans" id="rans"></div><p class="fine">' + esc(r.priv) + "</p></section>";
+  }
+  function showReflect(after) {
+    if (document.getElementById("reflect")) return;
+    var host = after || app.querySelector(".breathe, .card.guide, .card[aria-live]");
+    if (!host) return;
+    host.insertAdjacentHTML("afterend", reflectHTML());
+    var box = document.getElementById("reflect");
+    Array.prototype.forEach.call(box.querySelectorAll("button[data-r]"), function (b) {
+      b.onclick = function () {
+        Array.prototype.forEach.call(box.querySelectorAll("button[data-r]"), function (x) { x.setAttribute("aria-pressed", x === b ? "true" : "false"); });
+        var a = U().reflect[b.getAttribute("data-r")];
+        document.getElementById("rans").innerHTML = "<p>" + fmt(a[1]) + "</p>";
+      };
+    });
   }
 
   function phoneIcon() {
@@ -355,10 +432,14 @@
 
   function home() {
     var u = U();
-    var mods = ["toolbox", "learn", "sleep", "medicine", "appointment", "family"];
+    var mods = ["toolbox", "learn", "manage", "videos", "sleep", "medicine", "appointment", "family"];
     return banners() +
       '<section class="hero"><span class="tag">\ud83d\udccb ' + esc(u.unit) + '</span>' +
-      "<h1>" + esc(u.hello) + "</h1><p>" + esc(u.helloP) + "</p></section>" +
+      "<h1>" + esc(u.hello) + '</h1><p class="tagline">' + esc(u.tagline) + "</p><p>" + esc(u.helloP) + "</p></section>" +
+      '<section class="need" aria-labelledby="needh"><h2 id="needh">' + esc(u.needTitle) + '</h2><nav class="chips">' +
+      u.need.map(function (n) {
+        return '<a href="' + esc(n[2]) + '"' + (n[3] ? ' class="help"' : "") + '><span aria-hidden="true">' + n[0] + "</span>" + esc(n[1]) + "</a>";
+      }).join("") + "</nav></section>" +
       '<div class="duo">' +
       '<a class="calm" href="#/calm"><span class="ic" aria-hidden="true">\ud83e\udec1</span><b>' +
       esc(P("calm").title) + "</b><small>" + esc(u.calmSub) + "</small></a>" +
@@ -401,17 +482,25 @@
   }
 
   function breatheView(mode) {
-    var u = U(), ex = u.breath[mode];
+    var u = U(), ex = u.breath[mode], other = u.breath;
+    var wide = window.innerWidth >= 600;
+    var opts = voiceBtn() + ambBtn();
     return banners() + '<section class="pagehead"><a class="back" href="#/calm">' + esc(u.back) + "</a><h1>" + esc(ex.name) + "</h1></section>" +
       '<div class="breathe"><nav class="seg" aria-label="' + esc(u.pattern) + '">' +
-      '<a href="#/breathe-46"' + (mode === "b46" ? ' aria-current="page"' : "") + ">4-6</a>" +
-      '<a href="#/breathe-box"' + (mode === "box" ? ' aria-current="page"' : "") + ">4-4-4-4</a></nav>" +
+      '<a href="#/breathe-46"' + (mode === "b46" ? ' aria-current="page"' : "") + "><b>4\u20136</b><small>" + esc(other.b46.tag) + "</small></a>" +
+      '<a href="#/breathe-box"' + (mode === "box" ? ' aria-current="page"' : "") + "><b>4\u20134\u20134\u20134</b><small>" + esc(other.box.tag) + "</small></a></nav>" +
+      '<p class="cycle">' + fmt(ex.cycle) + "</p>" +
       '<div class="stage" aria-hidden="true"><div class="halo"></div><div class="ball" id="ball"></div><div class="count" id="count"></div></div>' +
       '<p class="phase" id="phase" aria-live="polite">' + esc(u.ready) + "</p>" +
-      '<div class="row"><button class="go" type="button" id="bstart">' + esc(u.start) + "</button>" + voiceBtn() + ambBtn() + "</div>" +
-      voiceNote() +
+      '<div class="row"><button class="go" type="button" id="bone">' + esc(u.startOne) + "</button>" +
+      '<button class="go ghost" type="button" id="bloop">' + esc(u.startLoop) + "</button>" +
+      '<button class="go" type="button" id="bstop" hidden>' + esc(u.stop) + "</button></div>" +
+      '<section class="safe"><p><span class="lbl">' + esc(u.care) + "</span> " + fmt(ex.care) + '</p><div class="row">' +
+      (mode === "box" ? '<a class="go ghost sm" href="#/breathe-46">' + esc(u.switch46) + "</a>" : "") +
+      '<button class="go ghost sm" type="button" id="bquit">' + esc(u.quit) + "</button></div></section>" +
       '<p class="cycles" id="cycles">' + esc(u.rounds) + ": 0</p>" +
-      '<p class="caution"><span class="lbl">' + esc(u.care) + "</span> " + fmt(ex.care) + "</p></div>";
+      (opts ? '<details class="optpanel"' + (wide ? " open" : "") + "><summary>" + esc(u.guideOpts) + '</summary><div class="row">' + opts + "</div>" + voiceNote() + "</details>" : "") +
+      "</div>";
   }
 
   function groundView(step) {
@@ -479,7 +568,7 @@
 
   /* ---------- breathing guide ---------- */
   function stopBreath() { if (timer) { clearTimeout(timer); timer = null; } }
-  function runBreath(mode) {
+  function runBreath(mode, max, onEnd) {
     var u = U();
     var seq = mode === "box"
       ? [["inhale", 4, 2.2], ["hold", 4, 2.2], ["exhale", 4, 1], ["hold", 4, 1]]
@@ -503,7 +592,17 @@
         if (sec > 0) tick();
         else {
           i = (i + 1) % seq.length;
-          if (i === 0) { rounds++; cy.textContent = u.rounds + ": " + rounds; }
+          if (i === 0) {
+            rounds++; cy.textContent = u.rounds + ": " + rounds;
+            if (max && rounds >= max) {   // finite mode: finish gently after the set number of rounds
+              timer = null; c.textContent = "";
+              ball.style.transition = reduce ? "none" : "transform 1s ease"; ball.style.transform = "scale(1)";
+              p.textContent = u.oneDone; say(u.oneDone, "breath-done");
+              ambEnd = setTimeout(ambStop, 3000);
+              if (onEnd) onEnd();
+              return;
+            }
+          }
           phaseStart();
         }
       }, 1000);
@@ -524,6 +623,7 @@
   }
   function render(keepScroll) {
     stopBreath();
+    document.body.classList.remove("exercising");
     stopSpeech();
     ambStop();
     var u = U(), r = route(), html;
@@ -540,8 +640,12 @@
     else { html = home(); r = ""; }
 
     html += '<footer class="sitefoot"><p>' + esc(u.fbAsk) + '</p>' +
-      '<a href="' + FEEDBACK_URL + '" target="_blank" rel="noopener noreferrer">' + esc(u.fbLink) + ' \u2197</a>' +
+      '<a href="' + FEEDBACK_URL + '" target="_blank" rel="noopener noreferrer">' + esc(u.fbLink) + extTag() + "</a>" +
       '<small>' + esc(u.fbNote) + "</small></footer>";
+    // Opened from a clinic card/QR (…?from=clinic): a short note linking clinic and home practice.
+    if (/[?&]from=clinic/.test(location.hash) && r) {
+      html = html.replace('</section>', '</section><p class="rx">' + esc(u.rxNote) + "</p>");
+    }
     app.innerHTML = html;
     var pg = P(r);
     var tname = pg ? pg.title : r.indexOf("breathe") === 0 ? u.breath[r === "breathe-box" ? "box" : "b46"].name
@@ -560,13 +664,30 @@
   }
 
   function bind(r) {
-    var bs = document.getElementById("bstart");
-    if (bs) bs.onclick = function () {
-      if (timer) { stopBreath(); hush(); ambStop(); resetBall(); bs.textContent = U().start; }
-      else { bs.textContent = U().stop; runBreath(r === "breathe-box" ? "box" : "b46"); }
-    };
+    var b1 = document.getElementById("bone"), bl = document.getElementById("bloop"),
+      bst = document.getElementById("bstop"), bq = document.getElementById("bquit");
+    if (b1) {
+      var bm = r === "breathe-box" ? "box" : "b46";
+      var running = function (on) {
+        b1.hidden = on; bl.hidden = on; bst.hidden = !on;
+        document.body.classList.toggle("exercising", on);   // slimmer (still one-tap) urgent-help bar while breathing
+        if (on) { var st = app.querySelector(".stage"); if (st && st.scrollIntoView) st.scrollIntoView({ block: "center", behavior: reduce ? "auto" : "smooth" }); }
+      };
+      var endBreath = function () { var was = !!timer; stopBreath(); hush(); ambStop(); resetBall(); running(false); if (was) showReflect(app.querySelector(".stage")); };
+      b1.onclick = function () {
+        running(true); bst.focus();
+        runBreath(bm, 1, function () { running(false); b1.textContent = U().again1; b1.focus(); showReflect(app.querySelector(".stage")); });
+      };
+      bl.onclick = function () { running(true); bst.focus(); runBreath(bm, 0); };
+      bst.onclick = function () { endBreath(); b1.focus(); };
+      bq.onclick = function () {
+        endBreath();
+        document.getElementById("phase").textContent = U().quitMsg;
+        say(U().quitMsg, "breath-quit");
+      };
+    }
     var gn = document.getElementById("gnext");
-    if (gn) gn.onclick = function () { groundStep++; render(true); speakGround(); };
+    if (gn) gn.onclick = function () { groundStep++; render(true); speakGround(); if (groundStep >= 5) showReflect(app.querySelector(".card[aria-live]")); };
     var ga = document.getElementById("gagain");
     if (ga) ga.onclick = function () { groundStep = 0; render(true); speakGround(); };
     var vt = document.getElementById("vtoggle");
@@ -590,7 +711,7 @@
     var gs = document.getElementById("gstart");
     if (gs) gs.onclick = function () {
       if (timer) { stopBreath(); hush(); ambStop(); var gc = document.getElementById("gcard"); if (gc) gc.classList.remove("on"); gs.textContent = U().start; document.getElementById("gtext").textContent = U().ready; document.getElementById("gcount").textContent = ""; }
-      else { gs.textContent = U().stop; runGuide(r, function () { gs.textContent = U().again; }); }
+      else { gs.textContent = U().stop; runGuide(r, function () { gs.textContent = U().again; showReflect(document.getElementById("gcard")); }); }
     };
     var pr = document.getElementById("doprint");
     if (pr) pr.onclick = function () { window.print(); };
@@ -611,10 +732,14 @@
     sp.setAttribute("aria-label", u.readAloud); sp.title = u.readAloud;
     bg.setAttribute("aria-label", u.textSize); bg.title = u.textSize;
     bg.setAttribute("aria-pressed", big ? "true" : "false");
-    document.getElementById("lang-ms").setAttribute("aria-pressed", lang === "ms" ? "true" : "false");
-    document.getElementById("lang-en").setAttribute("aria-pressed", lang === "en" ? "true" : "false");
+    ["ms", "en"].forEach(function (l) {   // radio group: only the chosen language is in the Tab order
+      var btn = document.getElementById("lang-" + l);
+      btn.setAttribute("aria-checked", lang === l ? "true" : "false");
+      btn.tabIndex = lang === l ? 0 : -1;
+    });
     document.getElementById("sos").innerHTML = phoneIcon() + esc(u.sos) + " <span>· " + esc(u.sosSub) + "</span>";
     document.getElementById("skip").textContent = u.skip;
+    if (tb) themeLabel();
   }
 
   /* ---------- read aloud (phone's own text-to-speech; nothing is sent) ---------- */
@@ -632,9 +757,31 @@
     sp.setAttribute("aria-pressed", "true");
   };
 
+  app.addEventListener("click", function (e) {
+    var b = e.target.closest && e.target.closest(".vplay");
+    if (b) playVideo(b.closest(".vid"));
+  });
+  var tb = document.getElementById("theme");
+  function themeLabel() {
+    var u = U();
+    tb.textContent = theme === "dark" ? "\u263E" : theme === "light" ? "\u2600" : "\u25D1";
+    tb.setAttribute("aria-label", u.themeLabel + ": " + u.themes[theme]); tb.title = tb.getAttribute("aria-label");
+  }
+  tb.onclick = function () {
+    theme = THEMES[(THEMES.indexOf(theme) + 1) % THEMES.length]; store.set("mt-theme", theme);
+    applyTheme(); themeLabel();
+  };
   document.getElementById("bigger").onclick = function () { big = !big; store.set("mt-big", big ? "1" : "0"); render(true); };
-  document.getElementById("lang-ms").onclick = function () { lang = "ms"; store.set("mt-lang", "ms"); render(true); };
-  document.getElementById("lang-en").onclick = function () { lang = "en"; store.set("mt-lang", "en"); render(true); };
+  function setLang(l, focus) {
+    if (l !== lang) { lang = l; store.set("mt-lang", l); render(true); }
+    if (focus) document.getElementById("lang-" + l).focus();
+  }
+  document.getElementById("lang-ms").onclick = function () { setLang("ms"); };
+  document.getElementById("lang-en").onclick = function () { setLang("en"); };
+  document.querySelector(".lang").addEventListener("keydown", function (e) {
+    if (["ArrowLeft", "ArrowRight", "ArrowUp", "ArrowDown"].indexOf(e.key) < 0) return;
+    e.preventDefault(); setLang(lang === "ms" ? "en" : "ms", true);
+  });
   if (hasTTS && speechSynthesis.addEventListener) speechSynthesis.addEventListener("voiceschanged", function () {
     voiceCache = {};
     var n = document.getElementById("vnote");

@@ -1,6 +1,14 @@
 /* Minda Tenang — Unit Psikiatri & Kesihatan Mental, Hospital Serian
    Plain CSS. Fonts are stored in this folder. No external servers, no trackers. */
 
+/* Inter (SIL Open Font License 1.1 — see fonts/OFL-LICENCE-Inter.txt) */
+@font-face{font-family:"Inter";font-style:normal;font-weight:400;font-display:swap;
+  src:url("fonts/inter-latin-400-normal.woff2") format("woff2")}
+@font-face{font-family:"Inter";font-style:normal;font-weight:600;font-display:swap;
+  src:url("fonts/inter-latin-600-normal.woff2") format("woff2")}
+@font-face{font-family:"Inter";font-style:normal;font-weight:700;font-display:swap;
+  src:url("fonts/inter-latin-700-normal.woff2") format("woff2")}
+
 /* Plus Jakarta Sans (SIL Open Font License 1.1 — see fonts/OFL-LICENCE.txt) */
 @font-face{font-family:"Plus Jakarta Sans";font-style:normal;font-weight:400;font-display:swap;
   src:url("fonts/plus-jakarta-sans-latin-400-normal.woff2") format("woff2")}
@@ -12,38 +20,43 @@
   src:url("fonts/plus-jakarta-sans-latin-800-normal.woff2") format("woff2")}
 
 :root{
-  --ground:#F5F8FA; --surface:#FFFFFF; --ink:#0F172A; --muted:#556577; --line:#E2E8F0;
-  --teal:#0F766E; --teal-ink:#FFFFFF; --mist:#CCFBF1; --mist-ink:#124E48;
-  --blue:#2563EB; --blue-soft:#EFF6FF;
+  /* v0.7 palette (Toolkit brief): Deep Teal #176B73, Soft Teal #5FA8A0, Sage #A8C7B5, Warm White #F7FAF9, Dark Slate #263238.
+     Soft amber = attention. Red = emergencies only. */
+  --ground:#F7FAF9; --surface:#FFFFFF; --ink:#263238; --muted:#546E6B; --line:#DCE8E4;
+  --teal:#176B73; --teal-ink:#FFFFFF; --mist:#E3F0EB; --mist-ink:#124F55;
+  --sage:#A8C7B5; --soft-teal:#5FA8A0;
+  --blue:#176B73; --blue-soft:#EEF6F4;
   --red:#BE123C; --red-ink:#FFFFFF; --red-soft:#FFF1F2;
-  --amber-soft:#FFFBEB; --amber-line:#D9A21B; --amber-ink:#6B4708;
-  --circle:#0D9488; --circle-halo:rgba(13,148,136,.14); --circle-glow:rgba(13,148,136,.28); --count-ink:#FFFFFF;
-  --head:#0F172A; --head-ink:#F8FAFC; --head-sub:#94A3B8; --head-line:#1E293B; --head-btn:#1E293B;
-  --hero-a:#134E4A; --hero-b:#0F172A; --hero-ink:#ECFDF5; --hero-chip:rgba(45,212,191,.18); --hero-chip-ink:#99F6E4;
-  /* icon tiles */
-  --t-teal-bg:#F0FDFA;   --t-teal-fg:#0F766E;
-  --t-amber-bg:#FFFBEB;  --t-amber-fg:#92600A;
-  --t-blue-bg:#EFF6FF;   --t-blue-fg:#1D4ED8;
-  --t-violet-bg:#F5F3FF; --t-violet-fg:#6D28D9;
-  --t-purple-bg:#FAF5FF; --t-purple-fg:#7E22CE;
-  --t-orange-bg:#FFF7ED; --t-orange-fg:#C2410C;
-  --t-emerald-bg:#ECFDF5;--t-emerald-fg:#047857;
-  --t-sky-bg:#F0F9FF;    --t-sky-fg:#0369A1;
-  --t-indigo-bg:#EEF2FF; --t-indigo-fg:#4338CA;
+  --amber-soft:#FFF8EC; --amber-line:#E0B25C; --amber-ink:#6B4A12;
+  --circle:#5FA8A0; --circle-halo:rgba(95,168,160,.16); --circle-glow:rgba(95,168,160,.30); --count-ink:#FFFFFF;
+  --head:#FFFFFF; --head-ink:#176B73; --head-sub:#546E6B; --head-line:#DCE8E4; --head-btn:#F7FAF9;
+  --head-on:#176B73; --head-on-ink:#FFFFFF;
+  --hero-a:#176B73; --hero-b:#5FA8A0; --hero-ink:#FFFFFF; --hero-chip:rgba(255,255,255,.2); --hero-chip-ink:#FFFFFF;
+  /* icon tiles: calm teal/sage family, amber for attention, rose for urgent */
+  --t-teal-bg:#E3F0EB;   --t-teal-fg:#176B73;
+  --t-amber-bg:#FFF4E0;  --t-amber-fg:#9A6412;
+  --t-blue-bg:#E3F0EB;   --t-blue-fg:#176B73;
+  --t-violet-bg:#EAF2EE; --t-violet-fg:#3E7B6C;
+  --t-purple-bg:#EAF2EE; --t-purple-fg:#3E7B6C;
+  --t-orange-bg:#FFF4E0; --t-orange-fg:#9A6412;
+  --t-emerald-bg:#E6F1EA;--t-emerald-fg:#2F6B4F;
+  --t-sky-bg:#E3F0EB;    --t-sky-fg:#176B73;
+  --t-indigo-bg:#E3F0EB; --t-indigo-fg:#176B73;
   --t-rose-bg:#FFF1F2;   --t-rose-fg:#BE123C;
   --fs:18px;
-  --font:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Verdana,sans-serif;
+  --font:"Inter",system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Verdana,sans-serif;
+  --font-head:"Plus Jakarta Sans",system-ui,-apple-system,"Segoe UI",Roboto,"Noto Sans",Verdana,sans-serif;
 }
 @media (prefers-color-scheme: dark){
   :root:not([data-theme="light"]){
-    --ground:#0B1220; --surface:#16202F; --ink:#E7EDF4; --muted:#9FB0C2; --line:#2A3748;
-    --teal:#2DD4BF; --teal-ink:#042F2E; --mist:#124E48; --mist-ink:#CCFBF1;
-    --blue:#93C5FD; --blue-soft:#17263A;
+    --ground:#0C1517; --surface:#152225; --ink:#E4EEEC; --muted:#9DB5B0; --line:#26393D;
+    --teal:#6CC3BA; --teal-ink:#06201F; --mist:#16383A; --mist-ink:#D3EDE7;
+    --blue:#6CC3BA; --blue-soft:#16282C;
     --red:#FB7185; --red-ink:#3F0715; --red-soft:#2A1420;
     --amber-soft:#2A2312; --amber-line:#7A6230; --amber-ink:#F2DDA6;
-    --circle:#2DD4BF; --circle-halo:rgba(45,212,191,.14); --circle-glow:rgba(45,212,191,.30); --count-ink:#042F2E;
-    --head:#020617; --head-ink:#F8FAFC; --head-sub:#94A3B8; --head-line:#1E293B; --head-btn:#1E293B;
-    --hero-a:#0F3F3C; --hero-b:#020617; --hero-ink:#ECFDF5; --hero-chip:rgba(45,212,191,.18); --hero-chip-ink:#99F6E4;
+    --circle:#5FB8B0; --circle-halo:rgba(95,184,176,.14); --circle-glow:rgba(95,184,176,.30); --count-ink:#042F2E;
+    --head:#0E1A1C; --head-ink:#E6F2EF; --head-sub:#9DB5B0; --head-line:#20353A; --head-btn:#16282C; --head-on:#5FB8B0; --head-on-ink:#06201F;
+    --hero-a:#124F55; --hero-b:#0E2A2D; --hero-ink:#ECFDF5; --hero-chip:rgba(45,212,191,.18); --hero-chip-ink:#99F6E4;
     --t-teal-bg:#042F2E;   --t-teal-fg:#5EEAD4;
     --t-amber-bg:#3A2A06;  --t-amber-fg:#FCD34D;
     --t-blue-bg:#152A4D;   --t-blue-fg:#93C5FD;
@@ -57,14 +70,14 @@
   }
 }
 :root[data-theme="dark"]{
-  --ground:#0B1220; --surface:#16202F; --ink:#E7EDF4; --muted:#9FB0C2; --line:#2A3748;
-  --teal:#2DD4BF; --teal-ink:#042F2E; --mist:#124E48; --mist-ink:#CCFBF1;
-  --blue:#93C5FD; --blue-soft:#17263A;
+  --ground:#0C1517; --surface:#152225; --ink:#E4EEEC; --muted:#9DB5B0; --line:#26393D;
+  --teal:#6CC3BA; --teal-ink:#06201F; --mist:#16383A; --mist-ink:#D3EDE7;
+  --blue:#6CC3BA; --blue-soft:#16282C;
   --red:#FB7185; --red-ink:#3F0715; --red-soft:#2A1420;
   --amber-soft:#2A2312; --amber-line:#7A6230; --amber-ink:#F2DDA6;
-  --circle:#2DD4BF; --circle-halo:rgba(45,212,191,.14); --circle-glow:rgba(45,212,191,.30); --count-ink:#042F2E;
-  --head:#020617; --head-ink:#F8FAFC; --head-sub:#94A3B8; --head-line:#1E293B; --head-btn:#1E293B;
-  --hero-a:#0F3F3C; --hero-b:#020617; --hero-ink:#ECFDF5; --hero-chip:rgba(45,212,191,.18); --hero-chip-ink:#99F6E4;
+  --circle:#5FB8B0; --circle-halo:rgba(95,184,176,.14); --circle-glow:rgba(95,184,176,.30); --count-ink:#042F2E;
+  --head:#0E1A1C; --head-ink:#E6F2EF; --head-sub:#9DB5B0; --head-line:#20353A; --head-btn:#16282C; --head-on:#5FB8B0; --head-on-ink:#06201F;
+  --hero-a:#124F55; --hero-b:#0E2A2D; --hero-ink:#ECFDF5; --hero-chip:rgba(45,212,191,.18); --hero-chip-ink:#99F6E4;
   --t-teal-bg:#042F2E;   --t-teal-fg:#5EEAD4;
   --t-amber-bg:#3A2A06;  --t-amber-fg:#FCD34D;
   --t-blue-bg:#152A4D;   --t-blue-fg:#93C5FD;
@@ -80,7 +93,7 @@
 html{font-size:var(--fs);-webkit-text-size-adjust:100%}
 body{background:var(--ground);color:var(--ink);font-family:var(--font);font-size:1rem;line-height:1.55;margin:0;-webkit-tap-highlight-color:transparent}
 .wrap{max-width:600px;margin:0 auto;padding:0 16px 130px}
-h1,h2,h3{font-weight:800;line-height:1.25;margin:0;text-wrap:balance}
+h1,h2,h3{font-family:var(--font-head);font-weight:800;line-height:1.25;margin:0;text-wrap:balance}
 h1{font-size:1.5rem} h2{font-size:1.2rem} h3{font-size:1.05rem}
 p{margin:0}
 a{color:var(--teal);text-underline-offset:3px}
@@ -99,17 +112,17 @@ button{font:inherit;color:inherit}
 .top{position:sticky;top:env(safe-area-inset-top,0px);z-index:5;background:var(--head);color:var(--head-ink);border-bottom:1px solid var(--head-line)}
 .top-in{max-width:600px;margin:0 auto;padding:8px 16px;display:flex;align-items:center;gap:10px}
 .brand{flex:1;min-width:0;display:flex;align-items:center;gap:10px;text-decoration:none;color:inherit;min-height:44px}
-.mark{width:36px;height:36px;flex:none;border-radius:11px;background:linear-gradient(135deg,#14B8A6,#34D399);display:grid;place-items:center;font-size:1.15rem;line-height:1}
-.brand b{font-size:1.02rem;display:block;line-height:1.15;white-space:nowrap;font-weight:800}
-.brand .badge{font-size:.56rem;font-weight:800;letter-spacing:.06em;vertical-align:middle;margin-left:6px;padding:2px 5px;border-radius:5px;background:#134E4A;color:#5EEAD4;border:1px solid #115E59;white-space:nowrap}
+.mark{width:36px;height:36px;flex:none;border-radius:11px;background:linear-gradient(135deg,#5FA8A0,#A8C7B5);display:grid;place-items:center;font-size:1.15rem;line-height:1}
+.brand b{font-family:var(--font-head);font-size:1.02rem;display:block;line-height:1.15;white-space:nowrap;font-weight:800}
+.brand .badge{font-size:.56rem;font-weight:800;letter-spacing:.06em;vertical-align:middle;margin-left:6px;padding:2px 5px;border-radius:5px;background:var(--mist);color:var(--mist-ink);border:1px solid var(--line);white-space:nowrap}
 .brand small{display:block;color:var(--head-sub);font-size:.7rem;line-height:1.2;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 .brand>span:last-child{min-width:0}
 .tools{display:flex;gap:6px;flex:none}
 .tbtn{min-width:44px;height:44px;border-radius:10px;border:1px solid var(--head-line);background:var(--head-btn);color:var(--head-ink);font-weight:700;font-size:.82rem;cursor:pointer;padding:0 8px}
-.tbtn[aria-pressed="true"]{background:#134E4A;border-color:#0D9488;color:#99F6E4}
+.tbtn[aria-pressed="true"]{background:var(--head-on);border-color:var(--head-on);color:var(--head-on-ink)}
 .lang{display:flex;border:1px solid var(--head-line);border-radius:10px;overflow:hidden;background:var(--head-btn)}
 .lang button{border:0;background:none;min-width:42px;height:42px;font-weight:700;font-size:.82rem;cursor:pointer;color:var(--head-ink)}
-.lang button[aria-pressed="true"]{background:#0D9488;color:#04211F}
+.lang button[aria-checked="true"]{background:var(--head-on);color:var(--head-on-ink)}
 /* voice button sits in the page body, not the dark header */
 .breathe .tbtn,.card .tbtn,.row .tbtn{background:var(--surface);color:var(--ink);border-color:var(--line)}
 .breathe .tbtn[aria-pressed="true"],.card .tbtn[aria-pressed="true"],.row .tbtn[aria-pressed="true"]{background:var(--mist);color:var(--mist-ink);border-color:var(--teal)}
@@ -296,3 +309,77 @@ details.sit .in{padding:0 16px 16px;display:grid;gap:10px}
 .guide.med .gtext{font-weight:600;font-size:1.2rem;line-height:1.5}
 .gnum.gleft{font-size:.9rem;font-weight:600;color:var(--muted)}
 @media (prefers-reduced-motion: reduce){ .guide.on .orb::before,.guide.on .orb i{animation:none} .gbar i{transition:none} }
+
+/* ---- v0.6 (audit fixes) ---- */
+[hidden]{display:none!important}
+.sr-only{position:absolute!important;width:1px;height:1px;padding:0;margin:-1px;overflow:hidden;clip:rect(0 0 0 0);white-space:nowrap;border:0}
+html:not(.js) .tools,html:not(.js) .sos{display:none}
+.brand b{overflow:hidden;text-overflow:ellipsis}
+.seg a{flex-direction:column;justify-content:center;line-height:1.15;padding:6px 16px;text-align:center}
+.seg a small{font-weight:600;font-size:.72rem;color:var(--muted)}
+.seg a[aria-current="page"] small{color:inherit;opacity:.85}
+.cycle{text-align:center;margin:0;max-width:34ch;font-size:.95rem}
+.safe{width:100%;box-sizing:border-box;background:var(--amber-soft);border:1px solid var(--amber-line);border-radius:12px;padding:10px 12px;color:var(--amber-ink);display:grid;gap:8px}
+.safe p{margin:0;font-size:.93rem}
+.safe .row{justify-content:flex-start}
+.go.sm{min-height:44px;padding:0 14px;font-size:.9rem}
+.optpanel{width:100%;box-sizing:border-box;border:1px solid var(--line);border-radius:12px;background:var(--surface);padding:0 12px}
+.optpanel summary{min-height:46px;display:flex;align-items:center;font-weight:700;cursor:pointer}
+.optpanel[open]{padding-bottom:12px}
+.optpanel .row{justify-content:flex-start}
+.optpanel .fine:empty{display:none}
+.nojs ul{padding-left:18px}
+.nojs li{margin:8px 0}
+.nojs-999{font-size:1.35rem;font-weight:800}
+@media (max-width:400px){ .brand b{font-size:.92rem} }
+@media (max-width:380px){ .top-in{gap:6px;padding:8px 12px} .tools{gap:4px} .tbtn{min-width:40px;padding:0 6px} .lang button{min-width:36px} .mark{width:30px;height:30px;font-size:1rem} .brand{gap:8px} }
+@media (max-width:340px){ .mark{display:none} .brand b{font-size:.9rem} }
+.stage{width:min(60vw,34vh,280px);min-width:190px}
+.exercising .sos{padding-top:4px;padding-bottom:calc(4px + env(safe-area-inset-bottom,0px))}
+.exercising .sos a{min-height:44px;font-size:.95rem}
+/* ================= v0.7 additions ================= */
+/* home: "What do you need right now?" quick chips */
+.need{margin-top:16px;display:grid;gap:8px}
+.need h2{font-size:1.05rem}
+.chips{display:grid;grid-template-columns:1fr 1fr;gap:8px}
+.chips a{display:flex;align-items:center;gap:8px;min-height:52px;padding:8px 12px;border-radius:14px;background:var(--surface);border:1px solid var(--line);color:var(--ink);text-decoration:none;font-weight:600;font-size:.92rem;line-height:1.25}
+.chips a span{font-size:1.15rem;flex:none}
+.chips a.help{background:var(--red-soft);border-color:var(--red);color:var(--red)}
+.chips a:active{transform:scale(.985)}
+.hero .tagline{font-weight:700;font-size:.95rem;opacity:1}
+
+/* clinic "prescription" note (#/page?from=clinic) */
+.rx{margin-top:12px;background:var(--mist);color:var(--mist-ink);border-radius:12px;padding:10px 14px;font-size:.9rem}
+
+/* video (click-to-load: nothing from YouTube loads until tapped) */
+.vids{display:grid;gap:10px}
+.vid{background:var(--surface);border:1px solid var(--line);border-radius:14px;padding:12px 14px;display:grid;gap:8px}
+.vid .vh{display:flex;gap:10px;align-items:flex-start}
+.vid .play{flex:none;width:44px;height:44px;border-radius:12px;background:var(--mist);color:var(--teal);display:grid;place-items:center}
+.vid b{display:block;line-height:1.3}
+.vid small{display:block;color:var(--muted);font-size:.8rem}
+.vid .frame{position:relative;width:100%;aspect-ratio:16/9;border-radius:10px;overflow:hidden;background:#000}
+.vid iframe{position:absolute;inset:0;width:100%;height:100%;border:0}
+.vid .vnote{font-size:.78rem;color:var(--muted)}
+.card .vid{background:var(--ground)}
+
+/* after-exercise reflection (nothing is saved) */
+.reflect{margin-top:14px;background:var(--surface);border:1px solid var(--line);border-radius:16px;padding:14px 16px;display:grid;gap:10px}
+.reflect h2{font-size:1.05rem}
+.reflect .opts button{min-height:44px;padding:0 14px;border-radius:10px;border:1px solid var(--line);background:var(--ground);color:var(--ink);font-weight:600;cursor:pointer}
+.reflect .opts button[aria-pressed="true"]{background:var(--mist);border-color:var(--teal);color:var(--mist-ink)}
+.reflect .ans{display:grid;gap:8px}
+
+/* tick lists (checkbox) inside printable forms */
+.ticks{display:grid;gap:6px}
+.ticks label{display:flex;align-items:flex-start;gap:10px;min-height:44px;padding:10px 12px;border:1px solid var(--line);border-radius:10px;background:var(--ground);cursor:pointer;line-height:1.35}
+.ticks input{width:20px;height:20px;flex:none;margin-top:1px;accent-color:var(--teal)}
+.q .qh{font-weight:700}
+.q.zone-g{border-left:5px solid var(--soft-teal);padding-left:10px}
+.q.zone-a{border-left:5px solid var(--amber-line);padding-left:10px}
+.q.zone-r{border-left:5px solid var(--red);padding-left:10px}
+
+/* theme button */
+#theme{font-size:1rem}
+@media (max-width:400px){.top-in{gap:8px}.mark{display:none}.tools{gap:4px}.tbtn{min-width:40px;padding:0 6px}.lang button{min-width:38px}}
+@media print{.chips,.vid,.reflect,.rx{display:none!important}.ticks label{border:0;padding:2px 0;min-height:0}}
